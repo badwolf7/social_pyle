@@ -1,0 +1,43 @@
+#pricing
+	.pricingTable
+		margin-bottom: 25px
+		table
+			box-shadow: 0 1px 2px 0 rgba(55,59,68,.35)
+			thead
+				th
+					text-align: center
+					padding: 13px 0 20px
+					font-size: 1.8em
+					&:first-child
+						border-radius: 3px 0 0 0
+						background: $cyanClouds
+					&:nth-child(2)
+						border-radius: 3px 0 0 0
+						background: $morningLight
+					&:last-child
+						border-radius: 0 3px 0 0
+						background: $lowLight
+						color: $snowWhite
+			tbody
+				tr td
+					border-right: 1px solid rgba(55,59,68,.05)
+					border-left: 1px solid rgba(55,59,68,.05)
+					vertical-align: top
+					padding: 7px 0
+				.description
+					font-size: 1.1em
+					font-weight: 600
+				.buttons
+					td
+						padding: 13px 0
+					.btn
+						font-size: 1.2em !important
+						padding: 9px 0 !important
+						transition: all ease .5s !important
+						border-radius: 3px
+						webkit-appearance: none
+					.btn-success
+						background: $green !important
+						border: none
+						&:hover
+							background: $cyanClouds !important
