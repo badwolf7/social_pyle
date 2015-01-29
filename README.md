@@ -1,8 +1,7 @@
 # Social Pyle
+## Social Network Aggregator
 
 ### Holly Springsteen
-
----
 
 [hollyspringsteen.com](https://hollyspringsteen.com)
 
