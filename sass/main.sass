@@ -1,0 +1,122 @@
+//----- COLORS -----//
+$red: #E3675C
+$redrgb: 227,103,92
+$green: #C2D985
+$greenrgb: 194,217,133
+
+//----- LOGO COLORS -----//
+$cyanClouds: #73C8A9
+$cyanCloudsRGB: 115,200,169
+$morningLight: #DEE1B6
+$morningLightRGB: 22,225,182
+$soft: #E1B866
+$softRGB: 225,184,102
+$orangeClouds: #BD5532
+$orangeCloudsRGB: 189,85,50
+$lowLight: #373B44
+$lowLightRGB: 55,59,68
+
+//----- TEXT/BG COLORS -----//
+$textBlack: #141823
+$snowWhite: #FFFAFA
+
+//----- SOCIAL COLORS -----//
+// https://simpleicons.org/
+$angellist: #000000
+$behance: #1769FF
+$bitbucket: #205081
+$blogger: #f57d00
+$codepen: #231F20
+$delicious: #3399ff
+$deviantart: #4e6252
+$digg: #000000
+$dribbble: #ea4c89
+$facebook: #3B5998
+$flickr: #FF0084
+$foursquare: #0072B1
+$github: #4183c4
+$google-plus: #D34836
+$instagram: #517FA4
+$linkedin: #007BB6
+$pinterest: #CB2027
+$quora: #A82400
+$reddit: #ff4500
+$reverbnation: #e43526
+$skype: #00aff0
+$slack: #6ECADC
+$snapchat: #FFFC00
+$soundcloud: #f80
+$spotify: #7ab800
+$stack-exchange: #195398
+$stack-overflow: #fe7a15
+$stumbleupon: #EB4924
+$trello: #0078BD
+$tumblr: #32506D
+$twitch: #6441A5
+$twitter: #4099FF
+$vimeo: #AAD450
+$vine: #00BF8F
+$xing: #006567
+$yelp: #C93C27
+$youtube: #BB0000
+
+// Fonts 
+$roboto: 'Roboto', sans-serif
+$ubuntu: 'Ubuntu', sans-serif
+
+//---------- MEASUREMENTS ----------//
+// BOOTSTRAP
+$sm: 760px
+$md: 995px
+$lg: 1170px
+
+//---------- IMPORTS ----------//
+@import bootstrap_switch
+@import footer
+@import header
+@import landing
+@import social
+@import social_list
+
+
+// Content
+h1,h2,h3,h4,h5,h6
+	font-family: $ubuntu
+p
+	font-family: $roboto
+ul
+	list-style: none
+	padding: 0
+
+html
+	max-width: 100%
+	width: 100%
+	color: $lowLight
+	overflow-x: hidden
+body
+	background: $snowWhite
+	max-width: 100%
+	width: 100%
+	overflow-x: hidden
+
+.accounts
+	aside
+		ul
+			li
+				margin: 3px 0
+				transition: all .75s ease
+				&:hover
+					box-shadow: inset 0 0 0 50px rgba(22,22,22,.25)
+				a
+					text-align: center
+					display: block
+					padding: 5px 0
+					// padding-right: 0
+					color: $snowWhite
+					font-size: 1.9em
+					&:hover
+						text-decoration: none
+
+
+
+

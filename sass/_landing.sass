@@ -1,0 +1,137 @@
+#landing
+	.cta
+		background: url("http://res.cloudinary.com/hollyspringsteen/image/upload/c_scale,w_2459/v1422477914/_DSC0382e_ddczu7.jpg")
+		background-repeat: no-repeat
+		background-size: 100%
+		box-shadow: inset 0 0 2px 2px rgba(22,22,22,.05)
+		margin-right: 0
+		color: #FFFAFA
+		.cta-left
+			padding: 120px 0 25px 5%
+			background: -moz-linear-gradient(left, rgba(26,28,38,1) 0%, rgba(0,0,0,1) 73%, rgba(0,0,0,1) 79%, rgba(0,0,0,0) 100%)
+			background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(26,28,38,1)), color-stop(73%,rgba(0,0,0,1)), color-stop(79%,rgba(0,0,0,1)), color-stop(100%,rgba(0,0,0,0)))
+			background: -webkit-linear-gradient(left, rgba(26,28,38,1) 0%,rgba(0,0,0,1) 73%,rgba(0,0,0,1) 79%,rgba(0,0,0,0) 100%)
+			background: -o-linear-gradient(left, rgba(26,28,38,1) 0%,rgba(0,0,0,1) 73%,rgba(0,0,0,1) 79%,rgba(0,0,0,0) 100%)
+			background: -ms-linear-gradient(left, rgba(26,28,38,1) 0%,rgba(0,0,0,1) 73%,rgba(0,0,0,1) 79%,rgba(0,0,0,0) 100%)
+			background: linear-gradient(to right, rgba(26,28,38,1) 0%,rgba(0,0,0,1) 73%,rgba(0,0,0,1) 79%,rgba(0,0,0,0) 100%)
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1a1c26', endColorstr='#00000000',GradientType=1 )
+			p
+				font-size: 1.8em
+				margin: 20px 0
+				&:first-child
+					margin-top: 15px
+				.fa
+					width: 15%
+					padding-left: 3%
+					font-size: 1.5em
+		.cta-right
+			padding-top: 120px
+			.passport-buttons
+				margin-top: 19px
+				li
+					.btn-social
+						margin-top: 15px
+						margin-bottom: 15px
+						border-radius: 2px !important
+						-webkit-appearance: none
+						transition: all .5s ease
+	.nxt
+		h3
+			font-weight: 300
+			font-size: 1.4em
+		table
+			box-shadow: 0 1px 2px 0 rgba(55,59,68,.35)
+			thead
+				th
+					text-align: center
+					padding: 13px 0 20px
+					font-size: 1.8em
+					&:first-child
+						border-radius: 3px 0 0 0
+						background: $morningLight
+					&:last-child
+						border-radius: 0 3px 0 0
+						background: $lowLight
+						color: $snowWhite
+			tbody
+				tr td
+					border-right: 1px solid rgba(55,59,68,.05)
+					border-left: 1px solid rgba(55,59,68,.05)
+					vertical-align: top
+					padding: 7px 0
+				.description
+					font-size: 1.1em
+					font-weight: 600
+				.buttons
+					td
+						padding: 13px 0
+					.btn
+						font-size: 1.2em !important
+						padding: 9px 0 !important
+						transition: all ease .5s !important
+						border-radius: 3px
+						webkit-appearance: none
+					.btn-success
+						background: $green !important
+						border: none
+						&:hover
+							background: $cyanClouds !important
+
+	.mediaList
+		ul
+			li
+				float: left
+				color: $lowLight
+				opacity: .75
+				.icon-facebook-sign
+					color: $facebook
+				.icon-twitter-sign
+					color: $twitter
+				.icon-google-plus-sign
+					color: $google-plus
+
+	.hiw
+		ul
+			li
+				opacity: .5
+				margin-bottom: -15px
+				a
+					font-size: 1.5em
+					display: block
+					transition: all ease .5s
+					color: $lowLight
+					background: none
+					text-align: center
+					padding: 10px 0 15px
+					cursor: pointer
+					border-radius: 3px 3px 0 0
+					&:hover
+						color: $cyanClouds
+						background: $lowLight
+						text-decoration: none
+			.active
+				opacity: 1 !important
+		section
+			clear: both
+			width: 400%
+			transition: margin ease .75s
+			article
+				height: 300px
+				clear: none
+				&:nth-child(1)
+					background: $lowLight
+					color: $snowWhite
+					border-radius: 3px 0 0 0
+					box-shadow: -1px -1px 5px 0 rgba(55,59,68,.5)
+				&:nth-child(2)
+					background: $orangeClouds
+					color: $snowWhite
+					box-shadow: 0 -1px 5px 0 rgba(55,59,68,.5)
+				&:nth-child(3)
+					background: $soft
+					box-shadow: 0 -1px 5px 0 rgba(55,59,68,.5)
+				&:nth-child(4)
+					background: $cyanClouds
+					border-radius: 0 3px 0 0
+					box-shadow: 1px -1px 5px 0 rgba(55,59,68,.5)
+

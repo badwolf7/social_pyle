@@ -1,0 +1,55 @@
+header
+	width: 100%
+	position: fixed
+	top: 0
+	left: 0
+	z-index: 1000
+	padding: 13px 2% 5px
+	transition: all ease .75s
+	h1
+		display: none
+	nav
+		transition: margin ease .5s
+		ul
+			float: right
+			li
+				float: left
+				a
+					padding: 0 10px 7px
+					margin: 0 7px
+					font-size: 1.3em
+					transition: border ease .4s
+					&:hover
+						text-decoration: none
+
+	&.upper
+		svg
+			transition: height 1s ease
+			height: 75px
+			path.text
+				fill: $morningLight
+		nav
+			margin-top: -8px
+			ul
+				li
+					a
+						color: $morningLight
+						text-shadow: 0 1px 3px $lowLight
+						&:hover
+							border-bottom: 5px solid $cyanClouds
+	&.lower
+		background: $snowWhite
+		box-shadow: 0 1px 3px 0 rgba(55,59,68,.5)
+		svg
+			transition: height 1s ease
+			height: 45px
+			path.text
+				fill: $lowLight
+		nav
+			margin-top: -23px
+			ul
+				li
+					a
+						color: $lowLight
+						&:hover
+							border-bottom: 5px solid $cyanClouds
