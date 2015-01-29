@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>	
+	<!-- Title -->
+		<title>Social Pyle</title>
+
+	<!-- CSS -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/assets/font-awesome-4.2.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/assets/css/bootstrap-social.css">
+		<link href="/assets/css/bootstrap-switch.css" rel="stylesheet">
+
+	<!-- Favicon -->
+		<link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+
+	<!-- Fonts -->
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700' rel='stylesheet' type='text/css'>
+        
+	<!-- JavaScript -->
+		<script  src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+		<script src="/assets/js/modernizr.custom.05501.js"></script>
+		<script src="/assets/js/selectivizr-min.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+		<script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<script src="/assets/js/bootstrap-switch.js"></script>
+	</head>
+	<body>
+		<div id="wrapper" class="wrapper">
+			<header class="lower">
+				<h1>Social Pyle</h1>
+				<% include logo %>
+				<nav>
+					<ul>
+						<li><a href="/about">About</a></li>
+						<li><a href="/pricing">Pricing</a></li>
+						<li><a href="/contact">Contact</a></li>
+					</ul>
+				</nav>
+			</header>
+
+			<%- body %>
+
+		</div> <!-- wrapper -->
+		<footer>
+			<% include logo %>
+			<nav>
+				<ul>
+					<li><a href="/about">About</a></li>
+					<li><a href="/pricing">Pricing</a></li>
+					<li><a href="/contact">Contact</a></li>
+				</ul>
+			</nav>
+		</footer>
+
+		<!-- CSS -->
+		<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+
+		<!-- JAVASCRIPT -->
+		<script src="/assets/js/main.js"></script>
+
+	</body>
+</html>

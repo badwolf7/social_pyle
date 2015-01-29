@@ -1,0 +1,25 @@
+{
+  "name": "SocialPyle",
+  "version": "1.1.1",
+  "authors": [
+    {
+      "name": "Holly Springsteen",
+      "email": "hhspringsteen@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "async": "^0.9.0",
+    "better-require": "0.0.3",
+    "cluster": "^0.7.7",
+    "ejs": "^1.0.0",
+    "ejs-locals": "^1.0.2",
+    "express": "^4.10.7",
+    "express-session": "^1.10.1",
+    "passport": "^0.2.1",
+    "passport-facebook": "^1.0.3",
+    "passport-twitter": "^1.0.2",
+    "sequelize": "^2.0.0-rc7",
+    "sequelize-hierarchy": "*",
+    "twitter": "^1.0.2"
+  }
+}
