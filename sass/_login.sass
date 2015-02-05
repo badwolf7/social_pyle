@@ -1,0 +1,26 @@
+#login
+	section
+		transition: background-position .5s ease
+		background: url("https://farm4.staticflickr.com/3767/10262248203_71ffa21a2b_h.jpg")
+		background-repeat: no-repeat
+		@media(max-width:$sm)
+			background-position: -69px -35px
+			background-size: auto 100%
+		@media(min-width:$sm)and(max-width:936px)
+			background-position: 0 -35px
+			background-size: auto 100%
+		@media(min-width:936px)and(max-width:$lg)
+			background-size: 100%
+			background-position: 0 -35px
+		@media(min-width:$lg)
+			background-size: 100%
+			background-position: 0 -65px
+
+		h1
+			visibility: hidden
+		.loginBox
+			background: rgba(255,250,250,.8)
+			box-shadow: 0 2px 3px 0 rgba(55,59,68,.45)
+			margin-bottom: 20px
+			padding-bottom: 15px
+			border-radius: 2px

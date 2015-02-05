@@ -72,9 +72,11 @@ $lg: 1170px
 
 //---------- IMPORTS ----------//
 @import bootstrap_switch
+@import dash
 @import footer
 @import header
 @import landing
+@import login
 @import pricing
 @import social
 @import social_list
@@ -100,7 +102,7 @@ body
 	width: 100%
 	overflow-x: hidden
 main:not(#landing)
-	margin-top: 85px
+	padding-top: 79px
 
 .accounts
 	aside
@@ -119,6 +121,15 @@ main:not(#landing)
 					font-size: 1.9em
 					&:hover
 						text-decoration: none
+.passport-buttons
+	margin-top: 19px
+	li
+		.btn-social
+			margin-top: 15px
+			margin-bottom: 15px
+			border-radius: 2px !important
+			-webkit-appearance: none
+			transition: all .5s ease
 
 
 

@@ -16,26 +16,75 @@ module.exports = function(){
 	app.use(passport.initialize());
 	app.use(passport.session());
 
+	var fbProfile = {};
+
 	passport.use(new FacebookStrategy({
 		clientID: FACEBOOK_APP_ID,
 		clientSecret: FACEBOOK_APP_SECRET,
-		callbackURL: "http://localhost:8000/auth/facebook/callback"
+		callbackURL: "http://localhost:3000/auth/facebook/callback"
 		},
 		function(accessToken, refreshToken, profile, done) {
+			// profileFields: [
+			// 	'id',
+			// 	'name',
+			// 	'photos',
+			// 	'picture.type(large)',
+			// 	'emails',
+			// 	'displayName',
+			// 	'about',
+			// 	'gender',
+			// 	"locale",
+			// 	"timezone"
+			// ]
 			console.log(profile);
+			fbProfile = profile;
 		}
 	));
 
 	//	Define FB login route
-	app.get('/auth/facebook', passport.authenticate('facebook'));
+	app.get('/auth/facebook',
+		passport.authenticate('facebook',{
+			profileFields: [
+				'id',
+				'name',
+				'displayName',
+				'username',
+				'photos',
+				'hometown',
+				'profileUrl',
+				'friends'
+			],
+			// scope: ['email', 'user_birthday', 'user_likes']
+			scope: 
+				// 'email',
+				// 'user_actions.fitness',
+				// 'user_friends',
+				'user_birthday'
+				// 'user_education_history',
+				// 'user_hometown',
+				// 'user_interests',
+				// 'user_location',
+				// 'user_photos',
+				// 'user_relationships',
+				// 'user_relationship_details',
+				// 'user_religion_politics',
+				// 'user_status',
+				// 'user_website',
+				// 'user_work_history'
+			
+		})
+	);
 
 	//	Define FB callback method
-	app.get('/auth/facebook/callback', 
-		passport.authenticate('facebook', {failureRedirect: '/' }),
-		function(req, res){
-			// Successful authentication
-			res.redirect('/accounts');
-		});
+	app.get('/auth/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/' }), function(req, res){
+		req.session.user = req.user;
+		if(req.session.direction){
+			res.redirect(req.session.direction);
+			delete req.session.direction;
+		}else{
+			res.json(req.session.user);
+		}
+	});
 
 
 	// Twitter
@@ -46,17 +95,25 @@ module.exports = function(){
 	},
 	function(token, tokenSecret, profile, done) {
 		console.log(profile);
+		res.render('/dash',{twit:profile});
 	}));
 
-	//	Define FB login route
+	//	Define Twitter login route
 	app.get('/auth/twitter', passport.authenticate('twitter'));
 
-	//	Define FB callback method
+	//	Define Twitter callback method
 	app.get('/auth/twitter/callback', 
 		passport.authenticate('twitter', { failureRedirect: '/' }),
 		function(req, res) {
 			// Successful authentication
-			res.redirect('/accounts');
+			console.log('Successful twitter authentication');
 		}
 	);
+
+	passport.serializeUser(function(user, done) {
+		done(null, user.id);
+	});
+	passport.deserializeUser(function(id, done) {
+		done(null, id);
+	});
 }
