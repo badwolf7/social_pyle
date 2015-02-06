@@ -9,7 +9,18 @@ var expressSession = require('express-session');
 var cluster = require('cluster');
 var http = require('http');
 
+// SQL ORM
+var Sequelize = require("sequelize");
+if(process.env.PORT){
+	var sequelize  = new Sequelize('socialPyle', 'root', 'zxcvbnm9', {host:"sdb.goportlight.com", port:3306, dialect: 'mysql'});
+}else{
+	var sequelize  = new Sequelize('socialPyle', 'root', 'root', {host:"localhost", port:8889, dialect: 'mysql'});
+}
+
 var include = [".js", ".coffee", ".cljs"];
+
+//give Sequelize to sequelize-hierarchy for prototyping
+require('sequelize-hierarchy')(Sequelize);
 
 // Skeleton of and Application
 global.app = express();
@@ -77,14 +88,14 @@ if (cluster.isMaster) {
 	app.models = {};
 	fs.readdirSync("./models").forEach(function(file) {
 		if(include.indexOf(path.extname(file)) > -1){
-			require("./models/" + file)();
+			require("./models/" + file)(sequelize);
 		}
 	});
 	
 	// Start up every script in the controllers folder
 	fs.readdirSync("./controllers").forEach(function(file) {
 		if(include.indexOf(path.extname(file)) > -1){
-			require("./controllers/" + file)();
+			require("./controllers/" + file)(sequelize);
 		}
 	});
 

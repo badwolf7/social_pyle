@@ -26,7 +26,35 @@ module.exports = function(){
 		function(accessToken, refreshToken, profile, done) {
 			console.log(profile);
 			fbProfile = profile;
-			done(null,profile);
+			app.models.User
+				.findOrCreate({
+					'where': {'fbId': profile.id},
+					'defaults':{ 
+						'fullName': profile._json.name,
+						'email': profile._json.email,
+						'active': 1
+					} 
+				})
+				.success(function(localUser, created) {
+					app.models.Facebook
+						.findOrCreate({
+							'where': { 'userId': localUser.id },
+							'defaults':{
+								'id': profile.id,
+								'displayName': profile.displayName,
+								'fullName': localUser.fullName,
+								'gender': profile.gender,
+								'profileUrl': profile.profileUrl,
+								'locale': profile._json.locale,
+								'timezone': profile._json.timezone,
+								'email': profile._json.email,
+								'userId': localUser.id
+							} 
+						})
+						.success(function(user, created) {
+							done(null,localUser);
+						});
+				});
 		}
 	));
 
