@@ -34,10 +34,14 @@
 				<a href="/"><% include logo %></a>
 				<nav>
 					<ul>
+						<% if(user){ %>
+						<li><p><%= user.fullName %></p></li>
+						<li><a href="/logout">Logout</a></li>
+						<% }else{ %>
 						<li><a href="/about">About</a></li>
 						<li><a href="/pricing">Pricing</a></li>
 						<li><a href="/login">Login</a></li>
-						<li><a href="/logout">Logout</a></li>
+						<% } %>
 					</ul>
 				</nav>
 			</header>
@@ -49,10 +53,14 @@
 			<% include logo %>
 			<nav>
 				<ul>
+					<% if(user){ %>
+					<li><p><%= user.fullName %></p></li>
+					<li><a href="/logout">Logout</a></li>
+					<% }else{ %>
 					<li><a href="/about">About</a></li>
 					<li><a href="/pricing">Pricing</a></li>
 					<li><a href="/login">Login</a></li>
-					<li><a href="/logout">Logout</a></li>
+					<% } %>
 				</ul>
 			</nav>
 		</footer>

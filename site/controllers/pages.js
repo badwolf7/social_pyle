@@ -10,11 +10,13 @@ module.exports = function(){
 	app.get('/:page', function(req, res){
 		if(fs.existsSync('views/' + req.params.page + '.ejs')){
 			if(req.session.user){
+				var msg = "in";
 				console.log("session user: ");
 				console.log(req.session.user);
 				res.render(req.params.page, {message: req.params.id, user: req.session.user});
 			}else{
-				res.render(req.params.page, {message: req.params.id});
+				var msg = "out";
+				res.render(req.params.page, {message: req.params.id, user: msg});
 			}
 		}else{
 			res.render('404');
