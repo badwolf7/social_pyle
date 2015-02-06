@@ -24,22 +24,30 @@ module.exports = function(){
 		callbackURL: "http://localhost:3000/auth/facebook/callback"
 		},
 		function(accessToken, refreshToken, profile, done) {
-			// profileFields: [
-			// 	'id',
-			// 	'name',
-			// 	'photos',
-			// 	'picture.type(large)',
-			// 	'emails',
-			// 	'displayName',
-			// 	'about',
-			// 	'gender',
-			// 	"locale",
-			// 	"timezone"
-			// ]
 			console.log(profile);
 			fbProfile = profile;
+			done(null,profile);
 		}
 	));
+
+	passport.use(new TwitterStrategy({
+		consumerKey: TWITTER_CONSUMER_KEY,
+		consumerSecret: TWITTER_CONSUMER_SECRET,
+		callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
+	},
+	function(token, tokenSecret, profile, done) {
+		console.log(profile);
+		res.render('/dash',{twit:profile});
+	}));
+
+
+	passport.serializeUser(function(user, done) {
+		done(null, user.id);
+	});
+	passport.deserializeUser(function(id, done) {
+		done(null, id);
+	});
+	
 
 	//	Define FB login route
 	app.get('/auth/facebook',
@@ -53,13 +61,12 @@ module.exports = function(){
 				'hometown',
 				'profileUrl',
 				'friends'
-			],
-			// scope: ['email', 'user_birthday', 'user_likes']
-			scope: 
+			]
+			// scope: [
 				// 'email',
 				// 'user_actions.fitness',
 				// 'user_friends',
-				'user_birthday'
+				// 'user_birthday'
 				// 'user_education_history',
 				// 'user_hometown',
 				// 'user_interests',
@@ -71,7 +78,7 @@ module.exports = function(){
 				// 'user_status',
 				// 'user_website',
 				// 'user_work_history'
-			
+			// ]
 		})
 	);
 
@@ -82,22 +89,12 @@ module.exports = function(){
 			res.redirect(req.session.direction);
 			delete req.session.direction;
 		}else{
-			res.json(req.session.user);
+			res.render('dash',{user:req.session.user});
 		}
 	});
 
 
 	// Twitter
-	passport.use(new TwitterStrategy({
-		consumerKey: TWITTER_CONSUMER_KEY,
-		consumerSecret: TWITTER_CONSUMER_SECRET,
-		callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
-	},
-	function(token, tokenSecret, profile, done) {
-		console.log(profile);
-		res.render('/dash',{twit:profile});
-	}));
-
 	//	Define Twitter login route
 	app.get('/auth/twitter', passport.authenticate('twitter'));
 
@@ -110,10 +107,9 @@ module.exports = function(){
 		}
 	);
 
-	passport.serializeUser(function(user, done) {
-		done(null, user.id);
-	});
-	passport.deserializeUser(function(id, done) {
-		done(null, id);
+
+	app.get('/logout', function(req, res){
+		req.logout();
+		res.redirect('/');
 	});
 }
