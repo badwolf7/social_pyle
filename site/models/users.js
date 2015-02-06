@@ -3,7 +3,7 @@ var Sequelize = require("sequelize");
 module.exports = function(sequelize){
 
 	//The user model itself.
-	app.models.User = sequelize.define('user', {
+	app.models.User = sequelize.define('users', {
 		'id': {'type': Sequelize.UUID, 'defaultValue': Sequelize.UUIDV4, 'primaryKey': true},
 		'active': Sequelize.BOOLEAN,
 		'fullName': Sequelize.TEXT,
@@ -18,7 +18,7 @@ module.exports = function(sequelize){
 	});
 	
 	//The facebook model
-	app.models.Facebook = sequelize.define('facebook', {
+	app.models.Facebook = sequelize.define('facebooks', {
 		'id': {'type': Sequelize.STRING, 'primaryKey': true},
 		'displayName': Sequelize.STRING,
 		'fullName': Sequelize.STRING,
@@ -30,7 +30,7 @@ module.exports = function(sequelize){
 	});
 
 	//The Google model
-	app.models.Google = sequelize.define('google', {
+	app.models.Google = sequelize.define('googles', {
 		'id': {'type': Sequelize.STRING, 'primaryKey': true},
 		'displayName': Sequelize.STRING,
 		'fullName': Sequelize.STRING,
@@ -42,19 +42,7 @@ module.exports = function(sequelize){
 	});
 
 	//The twitter model.
-	app.models.Twitter = sequelize.define('twitter', {
-		'id': {'type': Sequelize.STRING, 'primaryKey': true},
-		'displayName': Sequelize.STRING,
-		'fullName': Sequelize.STRING,
-		'email': Sequelize.STRING,
-		'gender': Sequelize.STRING,
-		'profileUrl': Sequelize.TEXT,
-		'locale': Sequelize.STRING,
-		'timezone': Sequelize.INTEGER
-	});
-
-	//The pinterest model. Currently commented till supported properly.
-	app.models.Pinterest = sequelize.define('pinterest', {
+	app.models.Twitter = sequelize.define('twitters', {
 		'id': {'type': Sequelize.STRING, 'primaryKey': true},
 		'displayName': Sequelize.STRING,
 		'fullName': Sequelize.STRING,
@@ -66,7 +54,7 @@ module.exports = function(sequelize){
 	});
 
 	//The Address model
-	app.models.Address = sequelize.define('address',{
+	app.models.Address = sequelize.define('addresses',{
 		'id': {'type': Sequelize.STRING, 'primaryKey': true},
 		'addressType': Sequelize.STRING,
 		'timezone': Sequelize.STRING,
@@ -75,20 +63,20 @@ module.exports = function(sequelize){
 	});
 
 	//The Phone model
-	app.models.Phone = sequelize.define('phone',{
+	app.models.Phone = sequelize.define('phones',{
 		'id': {'type': Sequelize.STRING, 'primaryKey': true},
 		'number': Sequelize.INTEGER,
 		'numberType': Sequelize.STRING
 	});
 
 	//The States model
-	app.models.State = sequelize.define('state',{
+	app.models.State = sequelize.define('states',{
 		'id': {'type': Sequelize.STRING, 'primaryKey': true},
 		'state': Sequelize.STRING
 	});
 
 		// CreditCard Model
-	app.models.CC = sequelize.define('creditCard', {
+	app.models.CC = sequelize.define('creditCards', {
 		'id': {'type': Sequelize.UUID, 'defaultValue': Sequelize.UUIDV4, 'primaryKey': true},
 		'token': Sequelize.UUID,
 		'brand': Sequelize.STRING,

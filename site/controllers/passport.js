@@ -89,24 +89,24 @@ module.exports = function(){
 				'hometown',
 				'profileUrl',
 				'friends'
-			]
-			// scope: [
-				// 'email',
+			],
+			scope: [
+				'email',
 				// 'user_actions.fitness',
 				// 'user_friends',
-				// 'user_birthday'
+				'user_birthday',
 				// 'user_education_history',
 				// 'user_hometown',
 				// 'user_interests',
 				// 'user_location',
-				// 'user_photos',
+				'user_photos'
 				// 'user_relationships',
 				// 'user_relationship_details',
 				// 'user_religion_politics',
 				// 'user_status',
 				// 'user_website',
 				// 'user_work_history'
-			// ]
+			]
 		})
 	);
 
@@ -117,7 +117,7 @@ module.exports = function(){
 			res.redirect(req.session.direction);
 			delete req.session.direction;
 		}else{
-			res.render('dash',{user:req.session.user});
+			res.redirect('/dash');
 		}
 	});
 

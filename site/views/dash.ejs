@@ -2,7 +2,9 @@
 
 <main id="dash" class="dash">
 	<section>
-		<h1>Welcome, <%= user.name.givenName %></h1>
+		<% if(user){ %>
+		<h1>Welcome, <%= user.fullName %></h1>
+		<% } %>
 	</section>
 	<section class="cardHolder col-xs-12">
 		<article>

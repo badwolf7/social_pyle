@@ -9,7 +9,13 @@ module.exports = function(){
 	//	Render template action for all pages
 	app.get('/:page', function(req, res){
 		if(fs.existsSync('views/' + req.params.page + '.ejs')){
-			res.render(req.params.page, {message: req.params.id});
+			if(req.session.user){
+				console.log("session user: ");
+				console.log(req.session.user);
+				res.render(req.params.page, {message: req.params.id, user: req.session.user});
+			}else{
+				res.render(req.params.page, {message: req.params.id});
+			}
 		}else{
 			res.render('404');
 		}
