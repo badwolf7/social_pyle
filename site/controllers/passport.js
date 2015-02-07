@@ -134,12 +134,4 @@ module.exports = function(){
 			console.log('Successful twitter authentication');
 		}
 	);
-
-
-	app.get('/logout', function(req, res){
-		req.logout();
-		req.session.user.destroy();
-		console.log('logout');
-		res.redirect('/');
-	});
 }
