@@ -22,10 +22,9 @@
     "passport-google": "^0.3.0",
     "passport-google-oauth": "^0.1.5",
     "passport-google-plus": "^0.5.1",
-    "passport-twitter": "^1.0.2",
     "sequelize": "^2.0.0-rc7",
     "sequelize-hierarchy": "^0.2.8",
-    "twitter": "^1.0.2",
+    "twitter": "^1.2.1",
     "uuid": "^2.0.1"
   }
 }
