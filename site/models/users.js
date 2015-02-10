@@ -50,7 +50,14 @@ module.exports = function(sequelize){
 		'gender': Sequelize.STRING,
 		'profileUrl': Sequelize.TEXT,
 		'locale': Sequelize.STRING,
-		'timezone': Sequelize.INTEGER
+		'timezone': Sequelize.INTEGER,
+		'followersCount':Sequelize.INTEGER,
+		'friendsCount':Sequelize.INTEGER,
+		'listedCount':Sequelize.INTEGER,
+		'favouritesCount':Sequelize.INTEGER,
+		'statusesCount':Sequelize.INTEGER,
+		'profileImageUrl':Sequelize.STRING,
+		'profileImageUrlHttps':Sequelize.STRING
 	});
 
 	//The Address model

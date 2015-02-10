@@ -2,6 +2,7 @@
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
+var GooglePlusStrategy = require('passport-google-oauth').OAuthStrategy;
 
 //	Configure FB connect method
 var FACEBOOK_APP_ID = '1007034979322153';
@@ -10,6 +11,11 @@ var FACEBOOK_APP_SECRET = 'f8478c7f34e451b27e3b1c118437ff8a';
 // Twitter App Data
 var TWITTER_CONSUMER_KEY = '9RZksOa8esVXKLytGQY3cXScJ';
 var TWITTER_CONSUMER_SECRET = 'ksc0TgxpwwP7xzsKAofoMCAiUc5TFGVk8CEFe5mFRSi2CShDqk';
+
+// Google App Data
+var GOOGLE_CLIENT_ID = '1044666733227-4u3rtup7s601l651q0ntti5itnpfr1h0.apps.googleusercontent.com';
+var GOOGLE_CLIENT_EMAIL = '1044666733227-4u3rtup7s601l651q0ntti5itnpfr1h0@developer.gserviceaccount.com';
+var GOOGLE_CLIENT_SECRET = 'FEMCRgUb8rlz76wg-jpYlRZp';
 
 module.exports = function(){
 	console.log('passport running');
@@ -24,6 +30,7 @@ module.exports = function(){
 		callbackURL: "http://localhost:3000/auth/facebook/callback"
 		},
 		function(accessToken, refreshToken, profile, done) {
+			console.log('|||||| profile ||||||');
 			console.log(profile);
 			fbProfile = profile;
 			app.models.User
@@ -62,11 +69,52 @@ module.exports = function(){
 		consumerKey: TWITTER_CONSUMER_KEY,
 		consumerSecret: TWITTER_CONSUMER_SECRET,
 		callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
+		},
+		function(token,tokenSecret,profile,done){
+			console.log(profile);
+			// twitterProfile = profile;
+			// app.models.User
+			// 	.findOrCreate({
+			// 		'where': {'twtId': profile.id},
+			// 		'defaults':{ 
+			// 			'fullName': profile._json.name,
+			// 			'email': profile._json.email,
+			// 			'active': 1
+			// 		} 
+			// 	})
+			// 	.success(function(localUser, created) {
+			// 		app.models.Twitter
+			// 			.findOrCreate({
+			// 				'where': { 'userId': localUser.id },
+			// 				'defaults':{
+			// 					'id': profile.id,
+			// 					'displayName': profile.displayName,
+			// 					'fullName': localUser.fullName,
+			// 					'gender': profile.gender,
+			// 					'profileUrl': profile.profileUrl,
+			// 					'locale': profile._json.locale,
+			// 					'timezone': profile._json.timezone,
+			// 					'email': profile._json.email,
+			// 					'userId': localUser.id
+			// 				} 
+			// 			})
+			// 			.success(function(user, created) {
+			// 				done(null,localUser);
+			// 			});
+			// 	});
+		}
+	));
+
+	passport.use(new GooglePlusStrategy({
+		consumerKey: 'GOOGLE_CLIENT_ID',
+		consumerSecret: 'GOOGLE_CLIENT_SECRET',
+		callbackURL: "http://127.0.0.1:3000/auth/google/callback"
 	},
-	function(token, tokenSecret, profile, done) {
+	function(tokens, profile, done) {
+		// Create or update user, call done() when complete... 
 		console.log(profile);
-		res.render('/dash',{twit:profile});
 	}));
+
 
 
 	passport.serializeUser(function(user, done) {
@@ -76,6 +124,7 @@ module.exports = function(){
 		done(null, id);
 	});
 	
+
 
 	//	Define FB login route
 	app.get('/auth/facebook',
@@ -111,15 +160,17 @@ module.exports = function(){
 	);
 
 	//	Define FB callback method
-	app.get('/auth/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/' }), function(req, res){
-		req.session.user = req.user;
-		if(req.session.direction){
-			res.redirect(req.session.direction);
-			delete req.session.direction;
-		}else{
-			res.redirect('/dash');
+	app.get('/auth/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/' }),
+		function(req, res){
+			req.session.user = req.user;
+			if(req.session.direction){
+				res.redirect(req.session.direction);
+				delete req.session.direction;
+			}else{
+				res.redirect('/dash');
+			}
 		}
-	});
+	);
 
 
 	// Twitter
@@ -132,6 +183,18 @@ module.exports = function(){
 		function(req, res) {
 			// Successful authentication
 			console.log('Successful twitter authentication');
+		}
+	);
+
+
+	// Google Plus
+	// Define Google Plus login route
+	app.get('/auth/google', passport.authenticate('google'));
+
+	// Define Google Plus callback method
+	app.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/'}),
+		function(req,res){
+			console.log('Successful Google Plus Auth');
 		}
 	);
 }

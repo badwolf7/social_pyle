@@ -34,7 +34,7 @@
 				<a href="/"><% include logo %></a>
 				<nav>
 					<ul>
-						<% if(user){ %>
+						<% if(user && user.fullName != undefined){ %>
 						<li><p><%= user.fullName %></p></li>
 						<li><a href="/logout">Logout</a></li>
 						<% }else{ %>

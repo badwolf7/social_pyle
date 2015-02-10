@@ -9,16 +9,18 @@ header
 	h1
 		display: none
 	nav
+		float:right
 		transition: margin ease .5s
+		padding: 10px 0 0
+		margin-top: 16px
 		ul
 			float: right
 			li
 				float: left
 				a
 					padding: 0 10px 7px
-					margin: 0 7px
 					font-size: 1.3em
-					transition: border ease .4s
+					transition: all ease .4s
 					&:hover
 						text-decoration: none
 
@@ -29,22 +31,14 @@ header
 			path.text
 				fill: $morningLight
 		nav
-			margin-top: -3px
-			width: 100%
 			height: 45px
-			padding: 10px 0 0
-			background: -moz-linear-gradient(left, rgba(55,59,68,0) 0%, rgba(55,59,68,0) 67%, rgba(55,59,68,0.5) 98%, rgba(55,59,68,0.5) 100%)
-			background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(55,59,68,0)), color-stop(67%,rgba(55,59,68,0)), color-stop(98%,rgba(55,59,68,0.5)), color-stop(100%,rgba(55,59,68,0.5)))
-			background: -webkit-linear-gradient(left, rgba(55,59,68,0) 0%,rgba(55,59,68,0) 67%,rgba(55,59,68,0.5) 98%,rgba(55,59,68,0.5) 100%)
-			background: -o-linear-gradient(left, rgba(55,59,68,0) 0%,rgba(55,59,68,0) 67%,rgba(55,59,68,0.5) 98%,rgba(55,59,68,0.5) 100%)
-			background: -ms-linear-gradient(left, rgba(55,59,68,0) 0%,rgba(55,59,68,0) 67%,rgba(55,59,68,0.5) 98%,rgba(55,59,68,0.5) 100%)
-			background: linear-gradient(to right, rgba(55,59,68,0) 0%,rgba(55,59,68,0) 67%,rgba(55,59,68,0.5) 98%,rgba(55,59,68,0.5) 100%)
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00373b44', endColorstr='#80373b44',GradientType=1 )
+		
 			ul
 				li
 					a
 						color: $morningLight
 						text-shadow: 0 1px 3px $lowLight
+						margin: 0 3px
 						&:hover
 							border-bottom: 5px solid $cyanClouds
 	&.lower
@@ -56,10 +50,10 @@ header
 			path.text
 				fill: $lowLight
 		nav
-			margin-top: -23px
 			ul
 				li
 					a
 						color: $lowLight
+						margin: 0 7px
 						&:hover
 							border-bottom: 5px solid $cyanClouds

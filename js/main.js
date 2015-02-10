@@ -137,7 +137,8 @@ window.onload = function(){
 		}
 	});
 
-	//
+	/////////////////////// STICKY FOOTER
+	/////////////////////////////////////
 	var footerHeight = 0,
 		footerTop = 0,
 		$footer = $("footer");
@@ -166,13 +167,14 @@ window.onload = function(){
 		}
 
 		$(window)
-			// .scroll(positionFooter)
 			.resize(positionFooter)
 
 	/////////////////////////// PAGE FLOW
 	/////////////////////////////////////
 	// Check if the user is on Chrome 
+	//		for some reason this is finicky on alternate browsers
 	var browserChrome = /chrom(e|ium)/.test(navigator.userAgent.toLowerCase()); 
+
 	function pageFlow(e, obj){
 		if(browserChrome){
 			e.preventDefault();
