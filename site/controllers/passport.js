@@ -1,8 +1,11 @@
+//  OAuth
+var OAuth = require('oauth').OAuth
 //	Passport
 var passport = require('passport');
 //  Passport Facebook
 var FacebookStrategy = require('passport-facebook').Strategy;
 //  Passport Twitter
+var TwitterStrategy = require('passport-twitter').Strategy;
 var Twitter = require('twitter');
 //  Passport Google
 var GooglePlusStrategy = require('passport-google-oauth').OAuthStrategy;
@@ -27,6 +30,13 @@ module.exports = function(){
 	console.log('passport running');
 	app.use(passport.initialize());
 	app.use(passport.session());
+
+	passport.serializeUser(function(user, done) {
+		done(null, user.id);
+	});
+	passport.deserializeUser(function(id, done) {
+		done(null, id);
+	});
 
 	var fbProfile = {};
 
@@ -72,22 +82,121 @@ module.exports = function(){
 	));
 	
 	//  Twitter
-	var client = new Twitter({
-		consumer_key: TWITTER_CONSUMER_KEY,
-		consumer_secret: TWITTER_CONSUMER_SECRET,
-		access_token_key: TWITTER_ACCESS_TOKEN,
-		access_token_secret: TWITTER_ACCESS_TOKEN_SECRET
-	});
-
-	app.get('/auth/twitter', function(req,res){
-		var screenName = req.query.sn;
-		var params = {screen_name: screenName};
-		client.get('statuses/user_timeline', params, function(error, tweets, response){
-			if (!error) {
-				console.log(tweets);
+	oauth = new OAuth(
+		"https://api.twitter.com/oauth/request_token",
+		"https://api.twitter.com/oauth/access_token",
+		TWITTER_CONSUMER_KEY,
+		TWITTER_CONSUMER_SECRET,
+		"1.0",
+		"http://127.0.0.1:3000/auth/twitter/callback",
+		"HMAC-SHA1"
+	);
+	app.get('/auth/twitter', function(req, res) {
+ 
+		oauth.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results, x, y) {
+			if (error) {
+				console.log(error);
+				res.send("Authentication Failed!");
+			}else {
+				console.log(results);
+				console.log(x);
+				console.log(y);
+				req.session.oauth = {
+					token: oauth_token,
+					token_secret: oauth_token_secret
+				};
+				console.log(req.session.oauth);
+				res.redirect('https://twitter.com/oauth/authenticate?oauth_token='+oauth_token);
+				console.log('redirect');
 			}
 		});
 	});
+	app.get('/auth/twitter/callback', function(req, res, next){
+		console.log('welcome back');
+		console.log(req.query.oauth_verifier);
+		req.session.oauth = req.query;
+		if (req.session.oauth) {
+			console.log('callback');
+			req.session.oauth.verifier = req.query.oauth_verifier;
+			var oauth_data = req.session.oauth;
+			console.log(oauth_data.verifier);
+			
+			oauth.getOAuthAccessToken(
+				oauth_data.token,
+				oauth_data.token_secret,
+				oauth_data.verifier,
+				function(error, oauth_access_token, oauth_access_token_secret, results) {
+					if (error) {
+						console.log(error);
+						res.send("Authentication Failure!");
+					}
+					else {
+						req.session.oauth.access_token = oauth_access_token;
+						req.session.oauth.access_token_secret = oauth_access_token_secret;
+						console.log("||||||||||  Auth YAY  ||||||||||||");
+						console.log(results, req.session.oauth);
+						res.send("Authentication Successful");
+						res.redirect('/'); // You might actually want to redirect!
+					}
+				}
+			);
+		}else {
+			res.redirect('/'); // Redirect to login page
+		}
+	});
+
+
+	// passport.use(new TwitterStrategy({
+	// 	consumerKey: TWITTER_CONSUMER_KEY,
+	// 	consumerSecret: TWITTER_CONSUMER_SECRET,
+	// 	callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
+	// },function(token, tokenSecret, profile, done) {
+	// 	process.nextTick(function(){
+	// 		console.log(profile);
+	// 		// return done(null, profile);
+	// 	});
+	// 	// User.findOrCreate({ twitterId: profile.id }, function (err, user) {
+	// 	// 	return done(err, user);
+	// 	// });
+	// }));
+
+	// app.get('/auth/twitter', passport.authenticate('twitter'));
+
+	// app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }),
+	// function(req, res) {
+	// 	// Successful authentication, redirect home.
+	// 	res.redirect('/');
+	// });
+
+
+
+
+
+	// Get Twitter Posts
+	// var client = new Twitter({
+	// 	consumer_key: TWITTER_CONSUMER_KEY,
+	// 	consumer_secret: TWITTER_CONSUMER_SECRET,
+	// 	access_token_key: TWITTER_ACCESS_TOKEN,
+	// 	access_token_secret: TWITTER_ACCESS_TOKEN_SECRET
+	// });
+
+	// app.get('/', function(req,res){
+	// 	var screenName = req.query.sn;
+	// 	console.log(screenName);
+	// 	var params = {screen_name: screenName};
+	// 	client.get('account/settings', params, function(error, tweets, response){
+	// 		if (!error) {
+	// 			console.log('|||||||||| TWITTER ||||||||||||');
+	// 			// console.log(response);
+	// 			// apps.models.User
+	// 			// 	.findOrCreate({
+	// 			// 		'where': {'twId': tweets.id}
+	// 			// 	})
+	// 			console.log(tweets);
+	// 			res.redirect('dash');
+	// 		}
+	// 	});
+	// });
 
 	//  Google
 	passport.use(new GooglePlusStrategy({
@@ -99,16 +208,6 @@ module.exports = function(){
 		// Create or update user, call done() when complete... 
 		console.log(profile);
 	}));
-
-
-
-	passport.serializeUser(function(user, done) {
-		done(null, user.id);
-	});
-	passport.deserializeUser(function(id, done) {
-		done(null, id);
-	});
-	
 
 
 	//	Define FB login route

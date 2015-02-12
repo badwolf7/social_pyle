@@ -82,7 +82,7 @@ if (cluster.isMaster) {
 	app.set('view engine', 'ejs');
 	app.use('/views', express.static('/views'));
 	app.use('/assets', express.static(__dirname + '/assets'));
-	app.use(expressSession({secret: '25054772e4aa4e9ab43f18b1c3ce2299'}));
+	app.use(expressSession({secret: '25054772e4aa4e9ab43f18b1c3ce2299', key: 'spapp', maxAge: 360*5, cookie: { secure: true }}));
 
 	// --- Models --- //
 	app.models = {};
