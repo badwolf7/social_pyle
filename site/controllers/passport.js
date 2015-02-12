@@ -4,9 +4,6 @@ var OAuth = require('oauth').OAuth
 var passport = require('passport');
 //  Passport Facebook
 var FacebookStrategy = require('passport-facebook').Strategy;
-//  Passport Twitter
-var TwitterStrategy = require('passport-twitter').Strategy;
-var Twitter = require('twitter');
 //  Passport Google
 var GooglePlusStrategy = require('passport-google-oauth').OAuthStrategy;
 
@@ -97,12 +94,10 @@ module.exports = function(){
 				console.log(error);
 				res.send("Authentication Failed!");
 			}else {
-				console.log(results);
 				req.session.oauth = {
 					token: oauth_token,
 					token_secret: oauth_token_secret
 				};
-				console.log(req.session.oauth);
 				res.redirect('https://twitter.com/oauth/authenticate?oauth_token='+oauth_token);
 				console.log('redirect');
 			}
@@ -110,16 +105,13 @@ module.exports = function(){
 	});
 	app.get('/auth/twitter/callback', function(req, res, next){
 		console.log('welcome back');
-		console.log(req.query.oauth_verifier);
 		req.session.oauth = req.query;
+		req.session.twitter = {};
 		req.session.oauth.verifier = req.query.oauth_verifier;
-		console.log(req.session.oauth);
 		var oauth_data = {}
 		if (req.session.oauth) {
 			console.log('callback');
 			oauth_data = req.session.oauth;
-
-			console.log(oauth_data);
 			
 			oauth.getOAuthAccessToken(oauth_data.oauth_token, req.session.oauth.token_secret, oauth_data.verifier,
 				function(error, oauth_access_token, oauth_access_token_secret, results) {
@@ -130,10 +122,65 @@ module.exports = function(){
 					else {
 						req.session.oauth.access_token = oauth_access_token;
 						req.session.oauth.access_token_secret = oauth_access_token_secret;
+						req.session.twitter.user_id = results.user_id;
+						req.session.twitter.screen_name = results.screen_name;
+
 						console.log("||||||||||  Auth YAY  ||||||||||||");
-						console.log(results, req.session.oauth);
-						res.send("Authentication Successful");
-						// res.redirect('/'); // You might actually want to redirect!
+
+						oauth.get(
+							'https://api.twitter.com/1.1/statuses/user_timeline.json?user_id='+req.session.twitter.user_id,
+							req.session.oauth.access_token,
+							req.session.oauth.access_token_secret,
+							function (e, profile, obj){
+								if (e) console.error(e);
+
+								profile = JSON.parse(profile);
+								twtProfile = {
+									"id": profile[0].user.id,
+									"fullName": profile[0].user.name,
+									"displayName": profile[0].user.screen_name,
+									"locale": profile[0].user.location,
+									"timezone": profile[0].user.time_zone,
+									"followersCount": profile[0].user.followers_count,
+									"friendsCount": profile[0].user.friends_count,
+									"listedCount": profile[0].user.listed_count,
+									"favouritesCount": profile[0].user.favourites_count,
+									"statusesCount": profile[0].user.statuses_count,
+									"profileImageUrl": profile[0].user.image_url,
+									"profileImageUrlHttps": profile[0].user.image_url_https
+								}
+								res.json(twtProfile);
+
+								// app.models.User
+								// 	.findOrCreate({
+								// 		'where': {'twtId': profile.id},
+								// 		'defaults':{ 
+								// 			'fullName': profile.name,
+								// 			'active': 1
+								// 		} 
+								// 	})
+								// 	.success(function(localUser, created) {
+								// 		app.models.Facebook
+								// 			.findOrCreate({
+								// 				'where': { 'userId': localUser.id },
+								// 				'defaults':{
+								// 					'id': profile.id,
+								// 					'displayName': profile.displayName,
+								// 					'fullName': localUser.fullName,
+								// 					'gender': profile.gender,
+								// 					'profileUrl': profile.profileUrl,
+								// 					'locale': profile._json.locale,
+								// 					'timezone': profile._json.timezone,
+								// 					'email': profile._json.email,
+								// 					'userId': localUser.id
+								// 				} 
+								// 			})
+								// 			.success(function(user, created) {
+								// 				done(null,localUser);
+								// 			});
+								// 	});
+							}
+						);
 					}
 				}
 			);
@@ -141,32 +188,6 @@ module.exports = function(){
 			res.redirect('/'); // Redirect to login page
 		}
 	});
-
-
-	// passport.use(new TwitterStrategy({
-	// 	consumerKey: TWITTER_CONSUMER_KEY,
-	// 	consumerSecret: TWITTER_CONSUMER_SECRET,
-	// 	callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
-	// },function(token, tokenSecret, profile, done) {
-	// 	process.nextTick(function(){
-	// 		console.log(profile);
-	// 		// return done(null, profile);
-	// 	});
-	// 	// User.findOrCreate({ twitterId: profile.id }, function (err, user) {
-	// 	// 	return done(err, user);
-	// 	// });
-	// }));
-
-	// app.get('/auth/twitter', passport.authenticate('twitter'));
-
-	// app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }),
-	// function(req, res) {
-	// 	// Successful authentication, redirect home.
-	// 	res.redirect('/');
-	// });
-
-
-
 
 
 	// Get Twitter Posts
