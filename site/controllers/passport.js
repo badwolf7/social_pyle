@@ -92,15 +92,12 @@ module.exports = function(){
 		"HMAC-SHA1"
 	);
 	app.get('/auth/twitter', function(req, res) {
- 
-		oauth.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results, x, y) {
+		oauth.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results) {
 			if (error) {
 				console.log(error);
 				res.send("Authentication Failed!");
 			}else {
 				console.log(results);
-				console.log(x);
-				console.log(y);
 				req.session.oauth = {
 					token: oauth_token,
 					token_secret: oauth_token_secret
@@ -115,16 +112,16 @@ module.exports = function(){
 		console.log('welcome back');
 		console.log(req.query.oauth_verifier);
 		req.session.oauth = req.query;
+		req.session.oauth.verifier = req.query.oauth_verifier;
+		console.log(req.session.oauth);
+		var oauth_data = {}
 		if (req.session.oauth) {
 			console.log('callback');
-			req.session.oauth.verifier = req.query.oauth_verifier;
-			var oauth_data = req.session.oauth;
-			console.log(oauth_data.verifier);
+			oauth_data = req.session.oauth;
+
+			console.log(oauth_data);
 			
-			oauth.getOAuthAccessToken(
-				oauth_data.token,
-				oauth_data.token_secret,
-				oauth_data.verifier,
+			oauth.getOAuthAccessToken(oauth_data.oauth_token, req.session.oauth.token_secret, oauth_data.verifier,
 				function(error, oauth_access_token, oauth_access_token_secret, results) {
 					if (error) {
 						console.log(error);
@@ -136,7 +133,7 @@ module.exports = function(){
 						console.log("||||||||||  Auth YAY  ||||||||||||");
 						console.log(results, req.session.oauth);
 						res.send("Authentication Successful");
-						res.redirect('/'); // You might actually want to redirect!
+						// res.redirect('/'); // You might actually want to redirect!
 					}
 				}
 			);
