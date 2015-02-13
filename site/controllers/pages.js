@@ -23,14 +23,10 @@ module.exports = function(){
 	//	Render template action for all pages
 	app.get('/:page', function(req, res){
 		if(fs.existsSync('views/' + req.params.page + '.ejs')){
-			console.log("");
-			console.log("");
-			console.log("req.session.user after:");
-			console.log(req.session.user);
-			console.log("");
-			console.log("");
 			if(req.session.user != undefined){
 				msg = "in";
+				console.log("");
+				console.log("");
 				console.log("session user: ");
 				console.log(req.session.user);
 				res.render(req.params.page, {message: req.params.id, user: req.session.user});

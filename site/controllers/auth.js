@@ -43,7 +43,7 @@ module.exports = function(){
 		callbackURL: "http://localhost:3000/auth/facebook/callback"
 		},
 		function(accessToken, refreshToken, profile, done) {
-			console.log('|||||| profile ||||||');
+			console.log('|||||| Facebook Profile ||||||');
 			console.log(profile);
 			fbProfile = profile;
 			app.models.User
@@ -145,19 +145,16 @@ module.exports = function(){
 					token_secret: oauth_token_secret
 				};
 				res.redirect('https://twitter.com/oauth/authenticate?oauth_token='+oauth_token);
-				console.log('redirect');
 			}
 		});
 	});
 	app.get('/auth/twitter/callback', function(req, res, next){
-		console.log('welcome back');
 		req.session.oauth = req.query;
 		req.session.twitter = {};
 		req.session.user = {};
 		req.session.oauth.verifier = req.query.oauth_verifier;
 		var oauth_data = {}
 		if (req.session.oauth) {
-			console.log('callback');
 			oauth_data = req.session.oauth;
 			
 			oauth.getOAuthAccessToken(oauth_data.oauth_token, req.session.oauth.token_secret, oauth_data.verifier,
@@ -173,71 +170,10 @@ module.exports = function(){
 						req.session.twitter.screen_name = results.screen_name;
 
 						console.log("||||||||||  Auth YAY  ||||||||||||");
+						console.log('Twitter Results');
+						console.log(results);
 
-						oauth.get(
-							'https://api.twitter.com/1.1/statuses/user_timeline.json?user_id='+req.session.twitter.user_id,
-							req.session.oauth.access_token,
-							req.session.oauth.access_token_secret,
-							function (e, profile, obj){
-								if (e) console.error(e);
-
-								profile = JSON.parse(profile);
-
-								twtProfile = {
-									"id": profile[0].user.id,
-									"fullName": profile[0].user.name,
-									"displayName": profile[0].user.screen_name,
-									"location": profile[0].user.location,
-									"locale": profile[0].user.lang,
-									"timezone": profile[0].user.time_zone,
-									"followersCount": profile[0].user.followers_count,
-									"friendsCount": profile[0].user.friends_count,
-									"listedCount": profile[0].user.listed_count,
-									"favouritesCount": profile[0].user.favourites_count,
-									"statusesCount": profile[0].user.statuses_count,
-									"profileImageUrl": profile[0].user.profile_image_url,
-									"profileImageUrlHttps": profile[0].user.profile_image_url_https
-								}
-								req.session.user = twtProfile;
-
-								app.models.User
-									.findOrCreate({
-										'where': {'twtId': twtProfile.id},
-										'defaults':{ 
-											'fullName': twtProfile.fullName,
-											'active': 1
-										} 
-									})
-									.success(function(localUser, created) {
-										app.models.Twitter
-											.findOrCreate({
-												'where': { 'userId': localUser.id },
-												'defaults':{
-													"id": twtProfile.id,
-													"fullName": twtProfile.fullName,
-													"displayName": twtProfile.displayName,
-													"location": twtProfile.location,
-													"locale": twtProfile.locale,
-													"timezone": twtProfile.timezone,
-													"followersCount": twtProfile.followersCount,
-													"friendsCount": twtProfile.friendsCount,
-													"listedCount": twtProfile.listedCount,
-													"favouritesCount": twtProfile.favouritesCount,
-													"statusesCount": twtProfile.statusesCount,
-													"profileImageUrl": twtProfile.profileImageUrl,
-													"profileImageUrlHttps": twtProfile.profileImageUrlHttps
-												}
-											})
-											.success(function(user, created) {
-												console.log("");
-												console.log("");
-												console.log("req.session.user before:");
-												console.log(req.session.user);
-												res.redirect('/dash');
-											});
-									});
-							}
-						);
+						res.redirect('/twitter/users/lookup');
 					}
 				}
 			);
@@ -257,6 +193,9 @@ module.exports = function(){
 	function(request, accessToken, refreshToken, profile, done){
 		var profileImg = profile.photos[0].value;
 		profileImg = profileImg.substring(0, profileImg.indexOf('?'));
+
+		console.log('||||||||||||  Google Profile  ||||||||||||');
+		console.log(profile);
 
 		var gUser = {
 			'id': profile.id,
@@ -318,10 +257,6 @@ module.exports = function(){
 				res.redirect(req.session.direction);
 				delete req.session.direction;
 			}else{
-				console.log("");
-				console.log("");
-				console.log("req.session.user before:");
-				console.log(req.session.user);
 				res.redirect('/dash');
 			}
 		}
