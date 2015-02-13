@@ -11,7 +11,7 @@ var TWITTER_OWNER_ID = '2863998855';
 module.exports = function(){
 	app.get('/twitter/users/lookup', function(req,res,next){
 		oauth.get(
-			'https://api.twitter.com/1.1/users/lookup.json?user_id='+req.session.twitter.user_id,
+			'https://api.twitter.com/1.1/users/lookup.json?user_id='+req.session.accounts.twitter.user_id,
 			req.session.oauth.access_token,
 			req.session.oauth.access_token_secret,
 			function (e, profile, obj){
@@ -70,7 +70,7 @@ module.exports = function(){
 								}
 							})
 							.success(function(user, created) {
-								res.redirect('/dash');
+								res.redirect('/twitter/statuses/user_timeline');
 							});
 					});
 			}
@@ -80,17 +80,40 @@ module.exports = function(){
 
 	app.get('/twitter/statuses/user_timeline', function(req,res,next){
 		oauth.get(
-			'https://api.twitter.com/1.1/statuses/user_timeline.json?user_id='+req.session.twitter.user_id,
+			'https://api.twitter.com/1.1/statuses/user_timeline.json?user_id='+req.session.accounts.twitter.user_id,
 			req.session.oauth.access_token,
 			req.session.oauth.access_token_secret,
 			function (e, tweets, obj){
 				if (e) console.error(e);
 
 				tweets = JSON.parse(tweets);
+				req.session.accounts.twitter.tweets = tweets;
 				console.log('||||||||||||  Twitter Tweets  ||||||||||||');
 				console.log(tweets);
 				console.log('');
 				console.log('');
+				// res.json(tweets);
+				res.redirect('/twitter/statuses/home_timeline');
+			}
+		);
+	});
+
+	app.get('/twitter/statuses/home_timeline', function(req,res,next){
+		oauth.get(
+			'https://api.twitter.com/1.1/statuses/home_timeline.json?user_id='+req.session.accounts.twitter.user_id,
+			req.session.oauth.access_token,
+			req.session.oauth.access_token_secret,
+			function (e, timeline, obj){
+				if (e) console.error(e);
+
+				timeline = JSON.parse(timeline);
+				req.session.accounts.twitter.timeline = timeline;
+				console.log('||||||||||||  Twitter Timeline  ||||||||||||');
+				console.log(timeline);
+				console.log('');
+				console.log('');
+				// res.json(timeline);
+				res.redirect('/dash');
 			}
 		);
 	});

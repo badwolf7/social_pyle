@@ -150,7 +150,8 @@ module.exports = function(){
 	});
 	app.get('/auth/twitter/callback', function(req, res, next){
 		req.session.oauth = req.query;
-		req.session.twitter = {};
+		req.session.accounts = {};
+		req.session.accounts.twitter = {};
 		req.session.user = {};
 		req.session.oauth.verifier = req.query.oauth_verifier;
 		var oauth_data = {}
@@ -166,8 +167,8 @@ module.exports = function(){
 					else {
 						req.session.oauth.access_token = oauth_access_token;
 						req.session.oauth.access_token_secret = oauth_access_token_secret;
-						req.session.twitter.user_id = results.user_id;
-						req.session.twitter.screen_name = results.screen_name;
+						req.session.accounts.twitter.user_id = results.user_id;
+						req.session.accounts.twitter.screen_name = results.screen_name;
 
 						console.log("||||||||||  Auth YAY  ||||||||||||");
 						console.log('Twitter Results');
