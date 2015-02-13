@@ -23,7 +23,12 @@ module.exports = function(){
 	//	Render template action for all pages
 	app.get('/:page', function(req, res){
 		if(fs.existsSync('views/' + req.params.page + '.ejs')){
+			console.log("");
+			console.log("");
+			console.log("req.session.user after:");
 			console.log(req.session.user);
+			console.log("");
+			console.log("");
 			if(req.session.user != undefined){
 				msg = "in";
 				console.log("session user: ");

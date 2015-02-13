@@ -34,11 +34,12 @@ module.exports = function(sequelize){
 		'id': {'type': Sequelize.STRING, 'primaryKey': true},
 		'displayName': Sequelize.STRING,
 		'fullName': Sequelize.STRING,
+		'location': Sequelize.STRING,
+		'locale': Sequelize.STRING,
 		'email': Sequelize.STRING,
 		'gender': Sequelize.STRING,
 		'profileUrl': Sequelize.TEXT,
-		'locale': Sequelize.STRING,
-		'timezone': Sequelize.INTEGER
+		'profileImageUrl': Sequelize.TEXT,
 	});
 
 	//The twitter model.
@@ -46,9 +47,7 @@ module.exports = function(sequelize){
 		'id': {'type': Sequelize.STRING, 'primaryKey': true},
 		'displayName': Sequelize.STRING,
 		'fullName': Sequelize.STRING,
-		'email': Sequelize.STRING,
-		'gender': Sequelize.STRING,
-		'profileUrl': Sequelize.TEXT,
+		'location': Sequelize.STRING,
 		'locale': Sequelize.STRING,
 		'timezone': Sequelize.INTEGER,
 		'followersCount':Sequelize.INTEGER,
@@ -56,8 +55,8 @@ module.exports = function(sequelize){
 		'listedCount':Sequelize.INTEGER,
 		'favouritesCount':Sequelize.INTEGER,
 		'statusesCount':Sequelize.INTEGER,
-		'profileImageUrl':Sequelize.STRING,
-		'profileImageUrlHttps':Sequelize.STRING
+		'profileImageUrl':Sequelize.TEXT,
+		'profileImageUrlHttps':Sequelize.TEXT
 	});
 
 	//The Address model
