@@ -29,20 +29,27 @@ module.exports = function(){
 				console.log("");
 				console.log("session user: ");
 				console.log(req.session.user);
-				console.log("session accounts");
-				console.log(req.session.accounts);
-				console.log("");
-				console.log("");
 
-				for(var i=0;i<req.session.accounts.twitter.tweets.length;i++){
-					req.session.accounts.twitter.timeline.unshift(req.session.accounts.twitter.tweets[i]);
+				if(req.session.accounts){
+					if(req.session.accounts.twitter){
+						for(var i=0;i<req.session.accounts.twitter.tweets.length;i++){
+							req.session.accounts.twitter.timeline.unshift(req.session.accounts.twitter.tweets[i]);
+						}
+						if(req.session.accounts.twitter.timeline){
+							res.render(req.params.page, {
+								message: req.params.id,
+								user: req.session.user,
+								twtTimeline: req.session.accounts.twitter.timeline
+							});
+						}
+					}
+				}else{
+					res.render(req.params.page, {
+						message: req.params.id,
+						user: req.session.user,
+						twtTimeline: ''
+					});
 				}
-
-				res.render(req.params.page, {
-					message: req.params.id,
-					user: req.session.user,
-					twtTimeline: req.session.accounts.twitter.timeline
-				});
 			}else{
 				msg = "out";
 				if(req.params.page == 'dash'){

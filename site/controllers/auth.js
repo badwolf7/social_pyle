@@ -10,6 +10,9 @@ var GoogleStrategy = require('passport-google-oauth2');
 //	Configure FB connect method
 var FACEBOOK_APP_ID = '1007034979322153';
 var FACEBOOK_APP_SECRET = 'f8478c7f34e451b27e3b1c118437ff8a';
+var fb_accessToken = '';
+var fb_refreshToken = '';
+var fb_profile = '';
 
 // Twitter App Data
 var TWITTER_CONSUMER_KEY = '9RZksOa8esVXKLytGQY3cXScJ';
@@ -45,7 +48,11 @@ module.exports = function(){
 		function(accessToken, refreshToken, profile, done) {
 			console.log('|||||| Facebook Profile ||||||');
 			console.log(profile);
-			fbProfile = profile;
+
+			fb_accessToken = accessToken;
+			fb_refreshToken = refreshToken;
+			fb_profile = profile;
+
 			app.models.User
 				.findOrCreate({
 					'where': {'fbId': profile.id},
@@ -113,12 +120,17 @@ module.exports = function(){
 	//	Define FB callback method
 	app.get('/auth/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/' }),
 		function(req, res){
+			req.session.accounts = {};
+			req.session.accounts.facebook = {};
 			req.session.user = req.user;
 			if(req.session.direction){
 				res.redirect(req.session.direction);
 				delete req.session.direction;
 			}else{
-				res.redirect('/dash');
+				req.session.accounts.facebook.accessToken = fb_accessToken;
+				req.session.accounts.facebook.refreshToken = fb_refreshToken;
+				req.session.accounts.facebook.profile = fb_profile;
+				res.redirect('/facebook/info');
 			}
 		}
 	);
