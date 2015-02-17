@@ -25,44 +25,63 @@ module.exports = function(){
 			plus.people.get({userId: 'me', auth: oauth2Client}, function(err,response){
 				if(!err){
 					console.log(response);
-					res.redirect('/google/people/activities/connected/list');
+					req.session.accounts.google.user = response;
+					res.redirect('/google/people/connected/list');
 				}else{
 					console.log(err);
 				}
 			});
 		}
 	);
-	app.get( '/google/people/activities/connected/list',
+	app.get( '/google/people/connected/list',
 		function(req, res){
-			// List friends that are online
-			req.session.accounts.google.activities = {};
+			// List friends that are connected
+			req.session.accounts.google.people = {};
 			console.log('');
 			console.log('');
-			console.log('|||||||||||||||||||||  /google/people/list');
+			console.log('|||||||||||||||||||||  /google/people/connected/list');
 			// collection:  Allowed values: [connected, visible]
 			plus.people.list({userId: 'me', collection: 'connected', auth: oauth2Client}, function(err,response){
 				if(!err){
 					console.log(response);
-					req.session.accounts.google.activities.connected = response;
-					res.redirect('/google/people/activities/visible/list');
+					req.session.accounts.google.people.connected = response;
+					res.redirect('/google/people/visible/list');
 				}else{
 					console.log(err);
 				}
 			});
 		}
 	);
-	app.get( '/google/people/activities/visible/list',
+	app.get( '/google/people/visible/list',
+		function(req, res){
+			// List friends that are visible
+			console.log('');
+			console.log('');
+			console.log('|||||||||||||||||||||  /google/people/visible/list');
+			// collection:  Allowed values: [connected, visible]
+			plus.people.list({userId: 'me', collection: 'visible', auth: oauth2Client}, function(err,response){
+				if(!err){
+					console.log(response);
+					req.session.accounts.google.people.visible = response;
+					res.redirect('/google/people/activities/list');
+				}else{
+					console.log(err);
+				}
+			});
+		}
+	);
+	app.get( '/google/people/activities/list',
 		function(req, res){
 			// List friends that are online
 			req.session.accounts.google.activities = {};
 			console.log('');
 			console.log('');
-			console.log('|||||||||||||||||||||  /google/people/list');
+			console.log('|||||||||||||||||||||  /google/activities');
 			// collection:  Allowed values: [connected, visible]
-			plus.people.list({userId: 'me', collection: 'visible', auth: oauth2Client}, function(err,response){
+			plus.activities.list({userId: 'me', collection: 'public', auth: oauth2Client}, function(err,response){
 				if(!err){
 					console.log(response);
-					req.session.accounts.google.activities.visible = response;
+					req.session.accounts.google.activities = response;
 					res.redirect('/google/people/moments/list');
 				}else{
 					console.log(err);
