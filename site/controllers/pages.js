@@ -39,15 +39,25 @@ module.exports = function(){
 							res.render(req.params.page, {
 								message: req.params.id,
 								user: req.session.user,
-								twtTimeline: req.session.accounts.twitter.timeline
+								twtTimeline: req.session.accounts.twitter.timeline,
+								google: ''
 							});
 						}
+					}
+					if(req.session.accounts.google){
+						res.render(req.params.page, {
+							message: req.params.id,
+							user: req.session.user,
+							twtTimeline: '',
+							google: req.session.accounts.google
+						});
 					}
 				}else{
 					res.render(req.params.page, {
 						message: req.params.id,
 						user: req.session.user,
-						twtTimeline: ''
+						twtTimeline: '',
+						google: ''
 					});
 				}
 			}else{

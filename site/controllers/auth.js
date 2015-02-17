@@ -6,6 +6,8 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 //  Passport Google
 var GoogleStrategy = require('passport-google-oauth2');
+var google = require('googleapis');
+var plus = google.plus('v1');
 
 //	Configure FB connect method
 var FACEBOOK_APP_ID = '1007034979322153';
@@ -206,6 +208,8 @@ module.exports = function(){
 	function(request, accessToken, refreshToken, profile, done){
 		var profileImg = profile.photos[0].value;
 		profileImg = profileImg.substring(0, profileImg.indexOf('?'));
+		googleAccessToken = accessToken;
+		googleRefreshToken = refreshToken;
 
 		console.log('||||||||||||  Google Profile  ||||||||||||');
 		console.log(profile);
@@ -264,13 +268,21 @@ module.exports = function(){
 
 	app.get( '/auth/google/callback', passport.authenticate('google', {failureRedirect: '/' }),
 		function(req, res){
+			req.session.accounts = {};
+			req.session.accounts.google = {};
+			req.session.accounts.google.accessToken = '';
+			req.session.accounts.google.refreshToken = '';
+
 			req.session.user = req.user;
+
+			req.session.accounts.google.accessToken = googleAccessToken;
+			req.session.accounts.google.refreshToken = googleRefreshToken;
 
 			if(req.session.direction){
 				res.redirect(req.session.direction);
 				delete req.session.direction;
 			}else{
-				res.redirect('/dash');
+				res.redirect('/google/people/get');
 			}
 		}
 	);
