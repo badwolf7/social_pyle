@@ -35,7 +35,14 @@
 				<nav>
 					<ul>
 						<% if(user && user.fullName != undefined){ %>
-						<li><p><%= user.fullName %></p></li>
+						<li>
+							<a href="/dash" type="button" id="accountDrop" data-toggle="dropdown" aria-expanded="true"><%= user.fullName %> <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="accountDrop">
+								<li role="presentation">
+									<a role="menuitem" tabindex="-1" href="/profile/accounts">Accounts</a>
+								</li>
+							</ul>
+						</li>
 						<li><a href="/logout">Logout</a></li>
 						<% }else{ %>
 						<li><a href="/about">About</a></li>

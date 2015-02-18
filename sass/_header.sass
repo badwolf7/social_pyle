@@ -23,6 +23,31 @@ header
 					transition: all ease .4s
 					&:hover
 						text-decoration: none
+					&:active
+						text-decoration: none
+			.open
+				#accountDrop
+					text-decoration: none
+					outline: none
+					&:hover
+						text-decoration: none
+					&:active
+						text-decoration: none
+				.dropdown-menu
+					background: $snowWhite
+					left: auto !important
+					margin-left: 6px
+					margin-top: -1px
+					border-radius: 0 0 2px 2px
+					border: none
+					li
+						width: 100%
+						a
+							border: none
+							display: block
+							&:hover
+								border: none
+								border-left: 3px solid $cyanClouds
 
 	&.upper
 		svg

@@ -27,6 +27,25 @@
 
 			<% } %>
 		<% } %>
+
+		<% if(google){ %>
+			<% for(var k=0;k<google.activities.items.length;k++){ %>
+				<% if(google.activities.items[k].verb == 'post'){ %>
+				<article>
+					<input type="hidden" value="<%= google.user.id %>" name="id" class="postId">
+					<div class="arrow-right"></div>
+					<p class="flag fa fa-google-plus"></p>
+					<% for(var l=0;l<google.activities.items[k].object.attachments.length;l++){ %>
+						<% if(google.activities.items[k].object.attachments[l].objectType == 'photo'){ %>
+							<img src="<%= google.activities.items[k].object.attachments[l].image.url %>" alt="<%= google.activities.items[k].object.attachments[l].id %>">
+						<% } %>
+					<% } %>
+					<a href="<%= google.user.url %>"><%= google.user.displayName %></a>
+					<p><%- google.activities.items[k].object.content %></p>
+				</article>
+				<% } %>
+			<% } %>
+		<% } %>
 		
 		<article>
 			<div class="arrow-right"></div>
