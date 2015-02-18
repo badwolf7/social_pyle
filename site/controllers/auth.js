@@ -28,6 +28,16 @@ var GOOGLE_CLIENT_ID = '1044666733227-4u3rtup7s601l651q0ntti5itnpfr1h0.apps.goog
 var GOOGLE_CLIENT_EMAIL = '1044666733227-4u3rtup7s601l651q0ntti5itnpfr1h0@developer.gserviceaccount.com';
 var GOOGLE_CLIENT_SECRET = 'FEMCRgUb8rlz76wg-jpYlRZp';
 
+// LinkedIn App Data
+var LINKEDIN_API_KEY = '78sio16pazf34t';
+var LINKEDIN_SECRET_KEY = 'MkKLY7FZJr9lhzvU';
+var LINKEDIN_OAUTH_TOKEN = 'ff8bd1f0-bd0f-4e91-9bf6-d701cdf0314d';
+var LINKEDIN_OAUTH_SECRET = 'a8bef072-65a1-4854-86de-97b75073a164';
+var LINKEDIN_CALLBACK_URL = 'http://127.0.0.1:3000/auth/linkedin/callback';
+
+var Linkedin = require('node-linkedin')(LINKEDIN_API_KEY,LINKEDIN_SECRET_KEY,LINKEDIN_CALLBACK_URL)
+
+
 module.exports = function(){
 	console.log('passport running');
 	app.use(passport.initialize());

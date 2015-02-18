@@ -50,6 +50,9 @@ module.exports = function(){
 						} 
 					})
 					.success(function(localUser, created) {
+						req.session.user.fbId = localUser.dataValues.fbId;
+						req.session.user.twtId = localUser.dataValues.twtId;
+						req.session.user.gId = localUser.dataValues.gId;
 						app.models.Twitter
 							.findOrCreate({
 								'where': { 'userId': localUser.id },

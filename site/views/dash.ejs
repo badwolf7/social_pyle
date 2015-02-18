@@ -2,27 +2,46 @@
 
 <main id="dash" class="dash">
 	<section>
-		<% if(user){ %>
-		<h1>Welcome, <%= user.fullName %></h1>
-		<% } %>
 	</section>
-	<section class="cardHolder col-xs-12">
-		<% if(twtTimeline){ %>
-			<% for(var i=0;i<twtTimeline.length;i++){ %>
+	<section class="cardHolder col-xs-12 js-masonry">
+		<% if(twitter){ %>
+			<% for(var i=0;i<twitter.feed.length;i++){ %>
 
-				<article>
-					<input type="hidden" value="<%= twtTimeline[i].id %>" name="id" class="postId">
+				<article class="post" style="color:#<%= twitter.feed[i].user.profile_text_color %>;">
+					<input type="hidden" value="<%= twitter.feed[i].id %>" name="id" class="postId">
 					<div class="arrow-right"></div>
 					<p class="flag fa fa-twitter"></p>
-					<% if(twtTimeline[i].entities.media != undefined){ %>
-						<% for(var j=0;j<twtTimeline[i].entities.media.length;j++){ %>
-							<% if(twtTimeline[i].entities.media[j].type == 'photo'){ %>
-								<img src="<%= twtTimeline[i].entities.media[j].media_url %>" alt="<%= twtTimeline[i].entities.media[j].id %>">
+					<div class="twtUsr">
+						<img src="<%= twitter.feed[i].user.profile_image_url %>" alt="<%= twitter.feed[i].user.name %>" height="45"> 
+						<p><%= twitter.feed[i].user.name %><br>
+							<a href="<%= twitter.feed[i].user.url %>" style="color:#<%= twitter.feed[i].user.profile_link_color %>;">@<%= twitter.feed[i].user.screen_name %></a>
+						</p>
+					</div>
+					<div class="media row">
+					<% if(twitter.feed[i].entities.media != undefined){ %>
+						<% for(var j=0;j<twitter.feed[i].entities.media.length;j++){ %>
+							<% if(twitter.feed[i].entities.media[j].type == 'photo' && twitter.feed[i].entities.urls.length > 0){ %>
+								<a href="<%= twitter.feed[i].entities.urls[0].url %>">
+									<img class="postImg" src="<%= twitter.feed[i].entities.media[j].media_url %>" alt="<%= twitter.feed[i].entities.media[j].id %>">
+								</a>
+							<% }else{ %>
+								<img class="postImg" src="<%= twitter.feed[i].entities.media[j].media_url %>" alt="<%= twitter.feed[i].entities.media[j].id %>">
 							<% } %>
 						<% } %>
 					<% } %>
-					<a href="<%= twtTimeline[i].user.url %>"><%= twtTimeline[i].user.name %></a>
-					<p><%= twtTimeline[i].text %></p>
+					</div>
+					<p class="feedTxt"><%- twitter.feed[i].text %></p>
+					<ul class="tweetData col-xs-12">
+						<li data-toggle="tooltip" data-placement="top" title="Retweets">
+							<i class="fa fa-retweet"></i> <%= twitter.feed[i].retweet_count %>
+						</li>
+						<li data-toggle="tooltip" data-placement="top" title="Favorites">
+							<i class="fa fa-star"></i> <%= twitter.feed[i].favorite_count %>
+						</li>
+						<li class="pull-right" data-toggle="tooltip" data-placement="top" title="Created">
+							<i class="fa fa-"></i> <%= twitter.feed[i].created %>
+						</li>
+					</ul>
 				</article>
 
 			<% } %>
@@ -37,31 +56,19 @@
 					<p class="flag fa fa-google-plus"></p>
 					<% for(var l=0;l<google.activities.items[k].object.attachments.length;l++){ %>
 						<% if(google.activities.items[k].object.attachments[l].objectType == 'photo'){ %>
-							<img src="<%= google.activities.items[k].object.attachments[l].image.url %>" alt="<%= google.activities.items[k].object.attachments[l].id %>">
+							<img class="postImg" src="<%= google.activities.items[k].object.attachments[l].image.url %>" alt="<%= google.activities.items[k].object.attachments[l].id %>">
 						<% } %>
 					<% } %>
 					<a href="<%= google.user.url %>"><%= google.user.displayName %></a>
-					<p><%- google.activities.items[k].object.content %></p>
+					<p class="feedTxt"><%- google.activities.items[k].object.content %></p>
 				</article>
 				<% } %>
 			<% } %>
 		<% } %>
-		
-		<article>
-			<div class="arrow-right"></div>
-			<p class="flag fa fa-facebook"></p>
-			<img src="https://farm3.staticflickr.com/2901/14305146627_6456a6983a_z.jpg" alt="Cape Zampa Lighthouse">
-			<h2>Cape Zampa Lighthouse</h2>
-			<a href="">Profile Link</a>
-			<p>Aliquam scelerisque maximus risus non eleifend. Sed tristique condimentum nunc, a blandit lectus vulputate a. Pellentesque in porttitor augue. Phasellus gravida feugiat ex, ac euismod lorem varius vitae. Cras ut ullamcorper leo. Morbi suscipit finibus risus, et dapibus leo. Nulla a lectus eu risus congue condimentum. Aliquam et efficitur tortor. Nulla ullamcorper ultricies pretium. Suspendisse potenti.</p>
-		</article>
-		<article class="col-md-4 col-sm-6 col-xs-12">
-			<div class="arrow-right"></div>
-			<p class="flag fa fa-google-plus"></p>
-			<img src="" alt="">
-			<h2>Title</h2>
-			<a href="">Profile Link</a>
-			<p>Aliquam scelerisque maximus risus non eleifend. Sed tristique condimentum nunc, a blandit lectus vulputate a. Pellentesque in porttitor augue. Phasellus gravida feugiat ex, ac euismod lorem varius vitae. Cras ut ullamcorper leo. Morbi suscipit finibus risus, et dapibus leo. Nulla a lectus eu risus congue condimentum. Aliquam et efficitur tortor. Nulla ullamcorper ultricies pretium. Suspendisse potenti.</p>
-		</article>
 	</section>
+	<script>
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip();
+		});
+	</script>
 </main>

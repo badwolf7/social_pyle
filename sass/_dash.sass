@@ -1,19 +1,21 @@
 #dash
 	.cardHolder
-		article
+		article.post
 			box-shadow: 0 1px 3px 0 rgba(55,59,68,.5)
 			border-radius: 3px
 			float: left
-			margin: 10px 1%
+			clear: none
+			margin: 20px 1% 10px
 			padding: 0 1%
+			overflow: hidden
 			@media(max-width:$sm)
-				width: 98%
+				width: 93.5%
 			@media(min-width:$sm)and(max-width:$md)
-				width: 48%
+				width: 46%
 			@media(min-width:$md)and(max-width:$lg)
-				width: 31.3333333333%
+				width: 30.3333333333%
 			@media(min-width:$lg)
-				width: 23%
+				width: 22.4%
 
 			.flag
 				float: right
@@ -36,7 +38,6 @@
 				border-top: 17px solid transparent
 				border-bottom: 17px solid transparent
 				border-left: 17px solid rgba(55,59,68,.1)
-				// border-left: 17px solid green
 				-ms-transform: rotate(45deg)
 				-webkit-transform: rotate(45deg)
 				transform: rotate(45deg)
@@ -45,5 +46,33 @@
 				border-radius: 0 0 2px 0
 
 			
-			img
-				width: 100%
+			.media
+				clear: both
+				max-height: 400px
+				overflow: hidden
+				margin-top: 7px
+				margin-bottom: 7px
+				.postImg
+					width: 100%
+
+			.twtUsr
+				img, p
+					float: left
+				img
+					border-radius: 0 0 2px 2px
+				p
+					margin-left: 8px
+			.feedTxt
+				clear: both
+			.tweetData
+				padding: 0
+				li
+					float: left
+					cursor: help
+					&:first-child
+						margin-left: 0
+						margin-right: 14px
+					&:last-child
+						margin-right: 0
+					&.pull-right
+						opacity: .5

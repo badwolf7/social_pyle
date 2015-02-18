@@ -81,6 +81,7 @@ if (cluster.isMaster) {
 	// set templating engine to ejs (jade sucks)
 	app.set('view engine', 'ejs');
 	app.use('/views', express.static('/views'));
+	app.use('/views/profile', express.static('/views/profile'));
 	app.use('/assets', express.static(__dirname + '/assets'));
 	app.use(expressSession({secret: '25054772e4aa4e9ab43f18b1c3ce2299'}));
 

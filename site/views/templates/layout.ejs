@@ -6,8 +6,7 @@
 
 	<!-- CSS -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/assets/font-awesome-4.2.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/assets/font-awesome-4.3.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/assets/css/bootstrap-social.css">
 		<link href="/assets/css/bootstrap-switch.css" rel="stylesheet">
 
@@ -25,23 +24,29 @@
 		<script src="/assets/js/selectivizr-min.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 		<script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 		<script src="/assets/js/bootstrap-switch.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/masonry/3.2.2/masonry.pkgd.min.js"></script>
 	</head>
 	<body>
 		<div id="wrapper" class="wrapper">
 			<header class="lower">
-				<h1>Social Pyle</h1>
-				<a href="/"><% include logo %></a>
+				<div class="col-xs-6">
+					<h1>Social Pyle</h1>
+					<a href="/"><% include logo %></a>
+				</div>
 				<nav>
 					<ul>
 						<% if(user && user.fullName != undefined){ %>
 						<li>
-							<a href="/dash" type="button" id="accountDrop" data-toggle="dropdown" aria-expanded="true"><%= user.fullName %> <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu" aria-labelledby="accountDrop">
-								<li role="presentation">
-									<a role="menuitem" tabindex="-1" href="/profile/accounts">Accounts</a>
-								</li>
-							</ul>
+							<div class="dropdown">
+								<a href="/dash" id="accountDrop" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= user.fullName %> <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="accountDrop">
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="/profile/settings">Accounts</a>
+									</li>
+								</ul>
+							</div>
 						</li>
 						<li><a href="/logout">Logout</a></li>
 						<% }else{ %>
@@ -76,6 +81,10 @@
 		<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 
 		<!-- JAVASCRIPT -->
+		<script>
+			$('.dropdown-toggle').dropdown();
+		</script>
+		<script src="/assets/js/ajax.js"></script>
 		<script src="/assets/js/main.js"></script>
 
 	</body>

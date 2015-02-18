@@ -5,7 +5,7 @@ window.onload = function(){
 	// 	});
 	// }
 
-	$("[name='my-checkbox']").bootstrapSwitch();
+	$("[name='social_toggle']").bootstrapSwitch();
 
 	var headerHeight = $('header').height();
 	function socialNav(){
@@ -168,6 +168,15 @@ window.onload = function(){
 
 		$(window)
 			.resize(positionFooter)
+
+	//////////////////////// CARD DISPLAY
+	/////////////////////////////////////
+	$('.cardHolder .post .feedTxt a:last-child').prepend('<br><br>');
+
+	$('.cardHolder').masonry({
+		columnWidth: '.post',
+		itemSelector: '.post'
+	});
 
 	/////////////////////////// PAGE FLOW
 	/////////////////////////////////////
