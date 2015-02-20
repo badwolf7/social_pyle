@@ -93,6 +93,8 @@ module.exports = function(){
 					console.log('');
 					console.log(response.items);
 					console.log('');
+					console.log(response.items[0].actor);
+					console.log('');
 					console.log(response.items[0].object);
 					console.log('');
 					console.log(response.items[0].object.attachments);

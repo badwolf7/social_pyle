@@ -7,12 +7,12 @@
 		<% if(twitter){ %>
 			<% for(var i=0;i<twitter.feed.length;i++){ %>
 
-				<article class="post" style="color:#<%= twitter.feed[i].user.profile_text_color %>;">
+				<article class="post twitter-post" style="color:#<%= twitter.feed[i].user.profile_text_color %>;">
 					<input type="hidden" value="<%= twitter.feed[i].id %>" name="id" class="postId">
 					<div class="arrow-right"></div>
 					<p class="flag fa fa-twitter"></p>
 					<div class="twtUsr">
-						<img src="<%= twitter.feed[i].user.profile_image_url %>" alt="<%= twitter.feed[i].user.name %>" height="45"> 
+						<img src="<%= twitter.feed[i].user.profile_image_url %>" alt="<%= twitter.feed[i].user.name %>" height="50"> 
 						<p><%= twitter.feed[i].user.name %><br>
 							<a href="<%= twitter.feed[i].user.url %>" style="color:#<%= twitter.feed[i].user.profile_link_color %>;">@<%= twitter.feed[i].user.screen_name %></a>
 						</p>
@@ -30,7 +30,7 @@
 						<% } %>
 					<% } %>
 					</div>
-					<p class="feedTxt"><%- twitter.feed[i].text %></p>
+					<p class="feedTxt twtFeedTxt"><%- twitter.feed[i].text %></p>
 					<ul class="tweetData col-xs-12">
 						<li data-toggle="tooltip" data-placement="top" title="Retweets">
 							<i class="fa fa-retweet"></i> <%= twitter.feed[i].retweet_count %>
@@ -50,17 +50,31 @@
 		<% if(google){ %>
 			<% for(var k=0;k<google.activities.items.length;k++){ %>
 				<% if(google.activities.items[k].verb == 'post'){ %>
-				<article>
+				<article class="post google-post">
 					<input type="hidden" value="<%= google.user.id %>" name="id" class="postId">
 					<div class="arrow-right"></div>
 					<p class="flag fa fa-google-plus"></p>
+					<div class="gUsr">
+						<img src="<%= google.activities.items[k].actor.image.url %>" alt="<%= google.activities.items[k].actor.displayName %>" height="50"> 
+						<p><a href="<%= google.activities.items[k].actor.url %>"><%= google.activities.items[k].actor.displayName %></a></p>
+					</div>
+					<div class="media row">
 					<% for(var l=0;l<google.activities.items[k].object.attachments.length;l++){ %>
 						<% if(google.activities.items[k].object.attachments[l].objectType == 'photo'){ %>
 							<img class="postImg" src="<%= google.activities.items[k].object.attachments[l].image.url %>" alt="<%= google.activities.items[k].object.attachments[l].id %>">
 						<% } %>
 					<% } %>
-					<a href="<%= google.user.url %>"><%= google.user.displayName %></a>
-					<p class="feedTxt"><%- google.activities.items[k].object.content %></p>
+					</div>
+					<p class="feedTxt gFeedTxt"><%- google.activities.items[k].object.content %></p>
+					<ul class="googData col-xs-12">
+						<li data-toggle="tooltip" data-placement="top" title="+1's">
+							<i class="fa fa-plus"><span>1</span></i> <%= google.activities.items[k].object.plusoners.totalItems %>
+						</li>
+						<li data-toggle="tooltip" data-placement="top" title="Shares">
+							<i class="fa fa-share"></i> <%= google.activities.items[k].object.resharers.totalItems %>
+						</li>
+						
+					</ul>
 				</article>
 				<% } %>
 			<% } %>

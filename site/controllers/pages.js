@@ -264,7 +264,11 @@ module.exports = function(){
 				if(refresh){
 					refresh = false;
 					console.log(refresh);
-					res.redirect('/twitter/users/lookup');
+					if(req.session.user.twtId != null){
+						res.redirect('/twitter/users/lookup');
+					}else if(req.session.user.gId != null){
+						res.redirect('/google/activities/list');
+					}
 				}else{
 					sub = '';
 					refresh = true;

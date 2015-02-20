@@ -1,1 +1,1 @@
-window.onload=function(){$(".socialList input[name=social_toggle]").change(function(){console.log($(this).val())})};
+window.onload=function(){console.log("AJAX"),$(".socialToggleSwitch").change(function(){console.log("switch"),console.log($(this).val())})};

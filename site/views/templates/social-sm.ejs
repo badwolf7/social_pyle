@@ -2,9 +2,9 @@
 	<li id="facebook">
 		<div class="col-sm-3 col-xs-5">
 			<% if(user.fbId != null){ %>
-			<input type="checkbox" name="social_toggle" value="fb_on" checked>
+			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="fb_on" checked>
 			<% }else{ %>
-			<input type="checkbox" name="social_toggle" value="fb_off">
+			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="fb_off">
 			<% } %>
 		</div>
 		<div class="col-sm-8 col-xs-7 facebook-bg">
@@ -14,9 +14,9 @@
 	<li id="google-plus">
 		<div class="col-sm-3 col-xs-5">
 			<% if(user.gId != null){ %>
-			<input type="checkbox" name="social_toggle" value="g_on" checked>
+			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="g_on" checked>
 			<% }else{ %>
-			<input type="checkbox" name="social_toggle" value="g_off">
+			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="g_off">
 			<% } %>
 		</div>
 		<div class="col-sm-8 col-xs-7 google-plus-bg">
@@ -26,9 +26,9 @@
 	<li id="twitter">
 		<div class="col-sm-3 col-xs-5">
 			<% if(user.twtId != null){ %>
-			<input type="checkbox" name="social_toggle" value="twt_on" checked>
+			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="twt_on" checked>
 			<% }else{ %>
-			<input type="checkbox" name="social_toggle" value="twt_off">
+			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="twt_off">
 			<% } %>
 		</div>
 		<div class="col-sm-8 col-xs-7 twitter-bg">

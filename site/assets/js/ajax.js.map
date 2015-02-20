@@ -1,1 +1,1 @@
-{"version":3,"sources":["js/ajax.js"],"names":["window","onload","$","change","console","log","this","val"],"mappings":"AAAAA,OAAOC,OAAS,WACfC,EAAE,yCAAyCC,OAAO,WACjDC,QAAQC,IAAIH,EAAEI,MAAMC","file":"ajax.js.map"}
+{"version":3,"sources":["js/ajax.js"],"names":["window","onload","console","log","$","change","this","val"],"mappings":"AAAAA,OAAOC,OAAS,WACfC,QAAQC,IAAI,QAEZC,EAAE,uBAAuBC,OAAO,WAC/BH,QAAQC,IAAI,UACZD,QAAQC,IAAIC,EAAEE,MAAMC","file":"ajax.js.map"}

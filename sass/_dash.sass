@@ -55,20 +55,25 @@
 				.postImg
 					width: 100%
 
-			.twtUsr
+			.twtUsr, .gUsr
 				img, p
 					float: left
 				img
 					border-radius: 0 0 2px 2px
+					margin-bottom: 7px
 				p
 					margin-left: 8px
 			.feedTxt
 				clear: both
-			.tweetData
+			.gFeedTxt
+				a
+					color: $trello
+			.tweetData, .googData
 				padding: 0
 				li
 					float: left
 					cursor: help
+					color: $lowLight
 					&:first-child
 						margin-left: 0
 						margin-right: 14px
@@ -76,3 +81,12 @@
 						margin-right: 0
 					&.pull-right
 						opacity: .5
+					.fa
+						opacity: .5
+						span
+							font-size: 1.35em
+							font-weight: 800
+			.googData
+				li
+					.fa-plus
+						font-size: .74em
