@@ -19,15 +19,14 @@
 		<link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700' rel='stylesheet' type='text/css'>
         
 	<!-- JavaScript -->
-		<script  src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-		<script src="/assets/js/modernizr.custom.05501.js"></script>
-		<script src="/assets/js/selectivizr-min.js"></script>
-		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-		<script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-		<script src="/assets/js/bootstrap-switch.js"></script>
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/masonry/3.2.2/masonry.pkgd.min.js"></script>
-		<script src="/assets/js/ajax.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+		<script type="text/javascript" src="/assets/js/modernizr.custom.05501.js"></script>
+		<script type="text/javascript" src="/assets/js/selectivizr-min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/assets/js/bootstrap-switch.js"></script>
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/masonry/3.2.2/masonry.pkgd.min.js"></script>
 	</head>
 	<body>
 		<div id="wrapper" class="wrapper">
@@ -43,6 +42,9 @@
 							<div class="dropdown">
 								<a href="/dash" id="accountDrop" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= user.fullName %> <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu" aria-labelledby="accountDrop">
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="/dash">Feed</a>
+									</li>
 									<li role="presentation">
 										<a role="menuitem" tabindex="-1" href="/profile/settings">Accounts</a>
 									</li>
@@ -82,10 +84,8 @@
 		<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 
 		<!-- JAVASCRIPT -->
-		<script>
-			$('.dropdown-toggle').dropdown();
-		</script>
-		<script src="/assets/js/main.js"></script>
+		<script type="text/javascript" src="/assets/js/main.js"></script>
+		<script type="text/javascript" src="/assets/js/ajax.js"></script>
 
 	</body>
 </html>

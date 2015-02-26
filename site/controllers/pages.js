@@ -12,6 +12,7 @@ var displayUrl = [];
 var usr, sub, post, url, anchor, linkColor, month, ms, d, s, createdNum = '';
 
 function urlify(text, linkColor, longUrl, shortUrl, displayUrl) {
+	console.log('urlify');
 	var urlRegex = /(https?:\/\/[^\s]+)/g;
 	return text.replace(urlRegex, function(url) {
 		for(var j=0;j<shortUrl.length;j++){
@@ -20,6 +21,7 @@ function urlify(text, linkColor, longUrl, shortUrl, displayUrl) {
 			}else{
 				anchor = '<a style="color:#'+linkColor+'" href="'+url+'" target="_blank">'+url+'</a>';
 			}
+			console.log(anchor);
 			return anchor;
 		}
 	});
@@ -126,6 +128,8 @@ function formatCreated(req, i, src, dateOrig){
 		if(d._data.hours==0){
 			if(d._data.minutes>0 || d._data.seconds>0){
 				var created = d._data.minutes+'min '+d._data.seconds+'sec';
+			}else{
+				var created = d._data.seconds+'sec';
 			}
 		}else if(d._data.hours==1){
 			var created = d._data.hours+'hr '+d._data.minutes+'min '+d._data.seconds+'sec';
@@ -187,6 +191,7 @@ function sessionBuilder(req,res){
 						}
 					}
 					req.session.accounts.twitter.timeline[i].text = urlify(req.session.accounts.twitter.timeline[i].text, linkColor, longUrl, shortUrl, displayUrl);
+					console.log(req.session.accounts.twitter.timeline[i].text);
 				}
 				req.session.accounts.twitter.timeline[i].created = formatCreated(req, i, 'timeline', req.session.accounts.twitter.timeline[i].created_at);
 				req.session.accounts.twitter.timeline[i].time_lapse = ms;
@@ -210,12 +215,21 @@ function sessionBuilder(req,res){
 					return 0;
 				});
 
-				res.render(page, {
-					message: req.params.id,
-					user: req.session.user,
-					twitter: req.session.accounts.twitter,
-					google: ''
-				});
+				if(req.session.accounts.google){
+					res.render(page, {
+						message: req.params.id,
+						user: req.session.user,
+						twitter: req.session.accounts.twitter,
+						google: req.session.accounts.google
+					});
+				}else{
+					res.render(page, {
+						message: req.params.id,
+						user: req.session.user,
+						twitter: req.session.accounts.twitter,
+						google: ''
+					});
+				}
 			}
 		}
 		if(req.session.accounts.google){
@@ -262,8 +276,8 @@ module.exports = function(){
 		if(fs.existsSync('views/' + req.params.page + '.ejs')){
 			if(req.session.user != undefined){
 				if(refresh){
+					console.log('|||||| ------------- REFRESH ------------- ||||||');
 					refresh = false;
-					console.log(refresh);
 					if(req.session.user.twtId != null){
 						res.redirect('/twitter/users/lookup');
 					}else if(req.session.user.gId != null){
@@ -271,9 +285,37 @@ module.exports = function(){
 					}
 				}else{
 					sub = '';
+					
+					if(req.session.user.fbId != null && req.session.accounts.facebook != null){
+						console.log('facebook');
+					}else if(req.session.user.fbId != null && req.session.accounts.facebook == null){
+						console.log('facebook login');
+						res.redirect('/auth/facebook');
+					}
+
+					if(req.session.user.twtId != null && req.session.accounts.twitter != null){
+						console.log('twitter');
+					}else if(req.session.user.twtId != null && req.session.accounts.twitter == null){
+						console.log('twitter login');
+						res.redirect('/auth/twitter');
+					}
+
+					if(req.session.user.gId != null && req.session.accounts.google != null){
+						console.log('google');
+					}else if(req.session.user.gId != null && req.session.accounts.google == null){
+						console.log('google login');
+						res.redirect('/auth/google');
+					}
+
 					refresh = true;
-					console.log(refresh);
-					sessionBuilder(req,res,sub);
+
+					console.log('');
+					console.log('req.session.accounts.timeline');
+					console.log(req.session.accounts.twitter.timeline);
+					console.log('');
+					setTimeout(function(){
+						sessionBuilder(req,res,sub);
+					}, 300);
 				}
 			}else{
 				msg = "out";
@@ -293,7 +335,9 @@ module.exports = function(){
 		if(fs.existsSync('views/profile/' + req.params.page + '.ejs')){
 			if(req.session.user != undefined){
 				sub = 'profile/';
-				sessionBuilder(req,res,sub);
+				setTimeout(function(){
+					sessionBuilder(req,res,sub);
+				}, 300);
 			}else{
 				msg = "out";
 				if(req.params.page == 'dash'){

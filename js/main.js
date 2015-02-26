@@ -1,11 +1,6 @@
-window.onload = function(){
-	// if($('main').hasClass('landing')){
-	// 	$('header').css({
-	// 		'display':'none'
-	// 	});
-	// }
-
+$(document).ready(function(){
 	$("[name='social_toggle']").bootstrapSwitch();
+	$('.dropdown-toggle').dropdown();
 
 	var headerHeight = $('header').height();
 	function socialNav(){
@@ -173,9 +168,11 @@ window.onload = function(){
 	/////////////////////////////////////
 	$('.cardHolder .post .feedTxt a:last-child').prepend('<br><br>');
 
-	$('.cardHolder').masonry({
-		columnWidth: '.post',
-		itemSelector: '.post'
+	$('.cardHolder').ready(function(){
+		$('.cardHolder').masonry({
+			columnWidth: '.post',
+			itemSelector: '.post'
+		});
 	});
 
 	/////////////////////////// PAGE FLOW
@@ -205,4 +202,4 @@ window.onload = function(){
 			headerScroll();
 		}
 	}
-};
+});

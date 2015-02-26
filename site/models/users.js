@@ -26,7 +26,9 @@ module.exports = function(sequelize){
 		'gender': Sequelize.STRING,
 		'profileUrl': Sequelize.TEXT,
 		'locale': Sequelize.STRING,
-		'timezone': Sequelize.INTEGER
+		'timezone': Sequelize.INTEGER,
+		'token': Sequelize.STRING,
+		'refreshToken': Sequelize.STRING
 	});
 
 	//The Google model
@@ -40,6 +42,8 @@ module.exports = function(sequelize){
 		'gender': Sequelize.STRING,
 		'profileUrl': Sequelize.TEXT,
 		'profileImageUrl': Sequelize.TEXT,
+		'token': Sequelize.STRING,
+		'refreshToken': Sequelize.STRING
 	});
 
 	//The twitter model.
@@ -56,7 +60,9 @@ module.exports = function(sequelize){
 		'favouritesCount':Sequelize.INTEGER,
 		'statusesCount':Sequelize.INTEGER,
 		'profileImageUrl':Sequelize.TEXT,
-		'profileImageUrlHttps':Sequelize.TEXT
+		'profileImageUrlHttps':Sequelize.TEXT,
+		'token': Sequelize.STRING,
+		'tokenSecret': Sequelize.STRING
 	});
 
 	//The Address model

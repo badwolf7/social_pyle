@@ -12,13 +12,15 @@ module.exports = function(){
 	app.get('/twitter/users/lookup', function(req,res,next){
 		oauth.get(
 			'https://api.twitter.com/1.1/users/lookup.json?user_id='+req.session.accounts.twitter.user_id,
-			req.session.oauth.access_token,
-			req.session.oauth.access_token_secret,
+			req.session.accounts.twitter.oauth.access_token,
+			req.session.accounts.twitter.oauth.access_token_secret,
 			function (e, profile, obj){
 				if (e) console.error(e);
 
 				profile = JSON.parse(profile);
 
+				console.log(req.session.accounts.twitter.oauth.access_token);
+				console.log(req.session.accounts.twitter.oauth.access_token_secret);
 				console.log('||||||||||||  Twitter Profile  ||||||||||||');
 				console.log(profile);
 				console.log('');
@@ -69,7 +71,9 @@ module.exports = function(){
 									"favouritesCount": twtProfile.favouritesCount,
 									"statusesCount": twtProfile.statusesCount,
 									"profileImageUrl": twtProfile.profileImageUrl,
-									"profileImageUrlHttps": twtProfile.profileImageUrlHttps
+									"profileImageUrlHttps": twtProfile.profileImageUrlHttps,
+									"token": req.session.accounts.twitter.oauth.access_token,
+									"tokenSecret": req.session.accounts.twitter.oauth.access_token_secret
 								}
 							})
 							.success(function(user, created) {
@@ -84,8 +88,8 @@ module.exports = function(){
 	app.get('/twitter/statuses/user_timeline', function(req,res,next){
 		oauth.get(
 			'https://api.twitter.com/1.1/statuses/user_timeline.json?user_id='+req.session.accounts.twitter.user_id,
-			req.session.oauth.access_token,
-			req.session.oauth.access_token_secret,
+			req.session.accounts.twitter.oauth.access_token,
+			req.session.accounts.twitter.oauth.access_token_secret,
 			function (e, tweets, obj){
 				if (e) console.error(e);
 
@@ -104,8 +108,8 @@ module.exports = function(){
 	app.get('/twitter/statuses/home_timeline', function(req,res,next){
 		oauth.get(
 			'https://api.twitter.com/1.1/statuses/home_timeline.json?user_id='+req.session.accounts.twitter.user_id,
-			req.session.oauth.access_token,
-			req.session.oauth.access_token_secret,
+			req.session.accounts.twitter.oauth.access_token,
+			req.session.accounts.twitter.oauth.access_token_secret,
 			function (e, timeline, obj){
 				if (e) console.error(e);
 

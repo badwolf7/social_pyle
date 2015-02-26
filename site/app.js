@@ -12,7 +12,7 @@ var http = require('http');
 // SQL ORM
 var Sequelize = require("sequelize");
 if(process.env.PORT){
-	var sequelize  = new Sequelize('socialPyle', 'root', 'zxcvbnm9', {host:"sdb.goportlight.com", port:3306, dialect: 'mysql'});
+	var sequelize  = new Sequelize('socialPyle', 'root', 'zxcvbnm90-', {host:"sdb.goportlight.com", port:3306, dialect: 'mysql'});
 }else{
 	var sequelize  = new Sequelize('socialPyle', 'root', 'root', {host:"localhost", port:8889, dialect: 'mysql'});
 }

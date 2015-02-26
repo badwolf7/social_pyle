@@ -1,3 +1,4 @@
+var Cookies = require('cookies');
 //  OAuth
 var OAuth = require('oauth').OAuth
 //	Passport
@@ -37,9 +38,29 @@ var LINKEDIN_CALLBACK_URL = 'http://127.0.0.1:3000/auth/linkedin/callback';
 
 var Linkedin = require('node-linkedin')(LINKEDIN_API_KEY,LINKEDIN_SECRET_KEY,LINKEDIN_CALLBACK_URL)
 
+// MySQL Connection
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+	host: '127.0.0.1',
+	port: '8889',
+	user: 'root',
+	password: 'root',
+	database: 'socialPyle'
+});
+connection.connect();
+// MySQL Queries
+var twitterQuery = 'SELECT * FROM twitters';
+connection.query(twitterQuery, function(err, rows, fields){
+	if(err) throw err;
+	for(var i in rows){
+		console.log('|||||||||||||||----------------------------------------------------------------************************* Twitter MySQL');
+		console.log(rows[i]);
+		console.log(fields[i]);
+	}
+});
+connection.end();
 
 module.exports = function(){
-	console.log('passport running');
 	app.use(passport.initialize());
 	app.use(passport.session());
 
@@ -87,7 +108,9 @@ module.exports = function(){
 								'locale': profile._json.locale,
 								'timezone': profile._json.timezone,
 								'email': profile._json.email,
-								'userId': localUser.id
+								'userId': localUser.id,
+								'token': accessToken,
+								'refreshToken': refreshToken
 							} 
 						})
 						.success(function(user, created) {
@@ -132,15 +155,22 @@ module.exports = function(){
 	//	Define FB callback method
 	app.get('/auth/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/' }),
 		function(req, res){
-			req.session.accounts = {};
+			var cookies = new Cookies(req, res);
+			cookies.set('fb_token',fb_accessToken,{'maxAge': '31556952000'});
+
+			if(req.session.accounts == undefined || req.session.accounts == null){
+				req.session.accounts = {};
+			}
 			req.session.accounts.facebook = {};
 			req.session.user = req.user;
 			if(req.session.direction){
 				res.redirect(req.session.direction);
 				delete req.session.direction;
 			}else{
-				req.session.accounts.facebook.accessToken = fb_accessToken;
-				req.session.accounts.facebook.refreshToken = fb_refreshToken;
+				req.session.accounts.facebook.oauth = {
+					'accessToken': fb_accessToken,
+					'refreshToken': fb_refreshToken
+				}
 				req.session.accounts.facebook.profile = fb_profile;
 				res.redirect('/facebook/info');
 			}
@@ -159,44 +189,90 @@ module.exports = function(){
 		"HMAC-SHA1"
 	);
 	app.get('/auth/twitter', function(req, res) {
+		var cookies = new Cookies(req, res);
+		cookieTwitterToken = cookies.get('token');
+
+		console.log(cookieTwitterToken);
+		
+		if(req.session.accounts == undefined || req.session.accounts == null){
+			req.session.accounts = {};
+		}
+		req.session.accounts.twitter = {};
+		req.session.accounts.twitter.oauth = {};
 		oauth.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results) {
 			if (error) {
 				console.log(error);
 				res.send("Authentication Failed!");
 			}else {
-				req.session.oauth = {
+				req.session.accounts.twitter.oauth = {
 					token: oauth_token,
 					token_secret: oauth_token_secret
 				};
+				cookies.set('twitter_token',oauth_token,{'maxAge': '31556952000'});
+				
 				res.redirect('https://twitter.com/oauth/authenticate?oauth_token='+oauth_token);
 			}
 		});
+
+		// if(cookieTwitterToken == undefined){
+
+		// 	if(req.session.accounts == undefined || req.session.accounts == null){
+		// 		req.session.accounts = {};
+		// 	}
+		// 	req.session.accounts.twitter = {};
+		// 	req.session.accounts.twitter.oauth = {};
+		// 	oauth.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results) {
+		// 		if (error) {
+		// 			console.log(error);
+		// 			res.send("Authentication Failed!");
+		// 		}else {
+		// 			req.session.accounts.twitter.oauth = {
+		// 				token: oauth_token,
+		// 				token_secret: oauth_token_secret
+		// 			};
+		// 			cookies.set('twitter_token',oauth_token,{'maxAge': '31556952000'});
+					
+		// 			res.redirect('https://twitter.com/oauth/authenticate?oauth_token='+oauth_token);
+		// 		}
+		// 	});
+		// }else{
+		// 	if(req.session.accounts == undefined || req.session.accounts == null){
+		// 		req.session.accounts = {};
+		// 	}
+		// 	req.session.accounts.twitter = {};
+		// 	req.session.accounts.twitter.oauth = {};
+
+		// 	req.session.accounts.twitter.oauth = {
+		// 		token: cookieTwitterToken,
+		// 		token_secret: cookieTwitterTokenSecret
+		// 	};
+		// }
 	});
 	app.get('/auth/twitter/callback', function(req, res, next){
-		req.session.oauth = req.query;
-		req.session.accounts = {};
-		req.session.accounts.twitter = {};
-		req.session.user = {};
-		req.session.oauth.verifier = req.query.oauth_verifier;
 		var oauth_data = {}
-		if (req.session.oauth) {
-			oauth_data = req.session.oauth;
+		req.session.user = {};
+		req.session.accounts.twitter.oauth = req.query;
+		req.session.accounts.twitter.oauth.verifier = req.query.oauth_verifier;
+		if (req.session.accounts.twitter.oauth) {
+			oauth_data = req.session.accounts.twitter.oauth;
 			
-			oauth.getOAuthAccessToken(oauth_data.oauth_token, req.session.oauth.token_secret, oauth_data.verifier,
+			oauth.getOAuthAccessToken(oauth_data.oauth_token, req.session.accounts.twitter.oauth.token_secret, oauth_data.verifier,
 				function(error, oauth_access_token, oauth_access_token_secret, results) {
 					if (error) {
 						console.log(error);
 						res.send("Authentication Failure!");
 					}
 					else {
-						req.session.oauth.access_token = oauth_access_token;
-						req.session.oauth.access_token_secret = oauth_access_token_secret;
+						req.session.accounts.twitter.oauth.access_token = oauth_access_token;
+						req.session.accounts.twitter.oauth.access_token_secret = oauth_access_token_secret;
 						req.session.accounts.twitter.user_id = results.user_id;
 						req.session.accounts.twitter.screen_name = results.screen_name;
 
 						console.log("||||||||||  Auth YAY  ||||||||||||");
 						console.log('Twitter Results');
 						console.log(results);
+						console.log('');
+						console.log('');
 
 						res.redirect('/twitter/users/lookup');
 					}
@@ -217,9 +293,14 @@ module.exports = function(){
 	},
 	function(request, accessToken, refreshToken, profile, done){
 		var profileImg = profile.photos[0].value;
+		
 		profileImg = profileImg.substring(0, profileImg.indexOf('?'));
+
 		googleAccessToken = accessToken;
 		googleRefreshToken = refreshToken;
+
+		console.log(googleAccessToken);
+		console.log(googleRefreshToken);
 
 		console.log('||||||||||||  Google Profile  ||||||||||||');
 		console.log(profile);
@@ -257,7 +338,9 @@ module.exports = function(){
 							'email': gUser.email,
 							'gender': gUser.gender,
 							'profileUrl': gUser.profileUrl,
-							'profileImageUrl': gUser.profileImageUrl
+							'profileImageUrl': gUser.profileImageUrl,
+							'token': googleAccessToken,
+							'refreshToken': googleRefreshToken
 						} 
 					})
 					.success(function(user, created) {
@@ -278,7 +361,12 @@ module.exports = function(){
 
 	app.get( '/auth/google/callback', passport.authenticate('google', {failureRedirect: '/' }),
 		function(req, res){
-			req.session.accounts = {};
+			var cookies = new Cookies(req, res);
+			cookies.set('google_token',googleAccessToken,{'maxAge': '31556952000'});
+
+			if(req.session.accounts == undefined || req.session.accounts == null){
+				req.session.accounts = {};
+			}
 			req.session.accounts.google = {};
 			req.session.accounts.google.accessToken = '';
 			req.session.accounts.google.refreshToken = '';

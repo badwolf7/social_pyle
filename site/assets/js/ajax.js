@@ -1,1 +1,1 @@
-window.onload=function(){console.log("AJAX"),$(".socialToggleSwitch").change(function(){console.log("switch"),console.log($(this).val())})};
+(function(){console.log("ajax"),$(".buttonCont").click(function(){"0px"==$(this).children(".bootstrap-switch").children(".bootstrap-switch-container").css("margin-left")?console.log("turn off"):"-50px"==$(this).children(".bootstrap-switch").children(".bootstrap-switch-container").css("margin-left")&&console.log("turn on")})})();
