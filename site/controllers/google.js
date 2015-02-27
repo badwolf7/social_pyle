@@ -22,8 +22,8 @@ module.exports = function(){
 			console.log('');
 			console.log('|||||||||||||||||||||  google.user');
 			oauth2Client.setCredentials({
-				access_token: req.session.accounts.google.accessToken,
-				refresh_token: req.session.accounts.google.refreshToken
+				access_token: req.session.accounts.google.oauth.accessToken,
+				refresh_token: req.session.accounts.google.oauth.refreshToken
 			});
 
 			plus.people.get({userId: 'me', auth: oauth2Client}, function(err,response){

@@ -168,12 +168,12 @@ $(document).ready(function(){
 	/////////////////////////////////////
 	$('.cardHolder .post .feedTxt a:last-child').prepend('<br><br>');
 
-	$('.cardHolder').ready(function(){
+	imagesLoaded($('.cardHolder'),function(){
 		$('.cardHolder').masonry({
 			columnWidth: '.post',
 			itemSelector: '.post'
 		});
-	});
+	})
 
 	/////////////////////////// PAGE FLOW
 	/////////////////////////////////////
