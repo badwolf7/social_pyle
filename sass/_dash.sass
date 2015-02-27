@@ -1,5 +1,28 @@
 #dash
-	.cardHolder
+	aside.dashOptions
+		float: left
+		margin: 20px 1% 10px
+		overflow: hidden
+		section
+			width: 100%
+			padding: 0 1%
+			background: $morningLight
+		@media(max-width:$sm)
+			display: none
+		@media(min-width:$sm)and(max-width:$md)
+			display: initial
+			width: 20.4%
+		@media(min-width:$md)
+			display: initial
+			width: 18.4%
+
+	section.cardHolder
+		@media(max-width:$sm)
+			width: 92%
+			float: none
+		@media(min-width:$sm)
+			width: 77.6%
+			float: left
 		article.post
 			box-shadow: 0 1px 3px 0 rgba(55,59,68,.5)
 			border-radius: 3px
@@ -8,20 +31,19 @@
 			margin: 20px 1% 10px
 			padding: 0 1%
 			overflow: hidden
-			@media(max-width:$sm)
-				width: 93.5%
-			@media(min-width:$sm)and(max-width:$md)
-				width: 46%
-			@media(min-width:$md)and(max-width:$lg)
-				width: 30.3333333333%
-			@media(min-width:$lg)
-				width: 22.4%
 			&.facebook-post
 				border-top: 4px solid $facebook
 			&.twitter-post
 				border-top: 4px solid $twitter
 			&.google-post
 				border-top: 4px solid $google-plus
+			@media(max-width:$sm)
+				width: 100%
+				margin: 20px auto 10px
+			@media(min-width:$sm)and(max-width:$md)
+				width: 43%
+			@media(min-width:$md)
+				width: 29.3333333333%
 
 			.flag
 				float: right

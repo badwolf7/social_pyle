@@ -126,10 +126,10 @@ function formatCreated(req, i, src, dateOrig){
 	// format created string to be displayed
 	if(d._data.days<1){
 		if(d._data.hours==0){
-			if(d._data.minutes>0 || d._data.seconds>0){
-				var created = d._data.minutes+'min '+d._data.seconds+'sec';
-			}else{
+			if(d._data.minutes==0){
 				var created = d._data.seconds+'sec';
+			}else{
+				var created = d._data.minutes+'min '+d._data.seconds+'sec';
 			}
 		}else if(d._data.hours==1){
 			var created = d._data.hours+'hr '+d._data.minutes+'min '+d._data.seconds+'sec';

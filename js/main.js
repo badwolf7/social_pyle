@@ -166,6 +166,14 @@ $(document).ready(function(){
 
 	//////////////////////// CARD DISPLAY
 	/////////////////////////////////////
+	var setHeight = function(){
+		var holderHeight = $('.cardHolder').height();
+		$('aside.dashOptions').css({
+			'height': holderHeight
+		});
+	}
+	setHeight();
+
 	$('.cardHolder .post .feedTxt a:last-child').prepend('<br><br>');
 
 	imagesLoaded($('.cardHolder'),function(){
@@ -193,6 +201,13 @@ $(document).ready(function(){
 		var obj = $(this);
 		pageFlow(e, obj);
 	});
+
+
+	/////////////////////////// On Resize
+	/////////////////////////////////////
+	window.onresize = function(){
+		setHeight();
+	}
 
 	/////////////////////////// On Scroll
 	/////////////////////////////////////

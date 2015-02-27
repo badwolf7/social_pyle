@@ -1,8 +1,22 @@
 <% layout('templates/layout') -%>
 
 <main id="dash" class="dash">
-	<section>
-	</section>
+	<aside class="dashOptions">
+		<section>
+			<ul>
+				<li>
+					<a href="">Facebook</a>
+				</li>
+				<li>
+					<a href="">Twitter</a>
+				</li>
+				<li>
+					<a href="">Google</a>
+				</li>
+			</ul>
+		</section>
+	</aside>
+	
 	<section class="cardHolder col-xs-12 js-masonry">
 		<% if(twitter){ %>
 			<% for(var i=0;i<twitter.feed.length;i++){ %>
