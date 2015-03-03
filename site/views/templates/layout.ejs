@@ -41,7 +41,7 @@
 						<% if(user && user.fullName != undefined){ %>
 						<li>
 							<div class="dropdown">
-								<a href="/dash" id="accountDrop" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= user.fullName %> <span class="caret"></span></a>
+								<a href="/dash" id="accountDrop" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" uId="<%= user.id %>" fbId="<%= user.fbId %>" gId="<%= user.gId %>" twtId="<%= user.twtId %>"><%= user.fullName %> <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu" aria-labelledby="accountDrop">
 									<li role="presentation">
 										<a role="menuitem" tabindex="-1" href="/dash">Feed</a>

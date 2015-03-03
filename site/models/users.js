@@ -10,9 +10,15 @@ module.exports = function(sequelize){
 		'email': Sequelize.STRING,
 		'customerToken': Sequelize.UUID,
 		'fbId': Sequelize.STRING,
+		'fbActive': Sequelize.BOOLEAN,
 		'twtId': Sequelize.STRING,
+		'twtActive': Sequelize.BOOLEAN,
 		'gId': Sequelize.STRING,
+		'gActive': Sequelize.BOOLEAN,
 		'pinId': Sequelize.STRING,
+		'pinActive': Sequelize.BOOLEAN,
+		'liId': Sequelize.STRING,
+		'liActive': Sequelize.BOOLEAN,
 		'addressId': Sequelize.INTEGER,
 		'phoneId': Sequelize.INTEGER
 	});
@@ -20,6 +26,7 @@ module.exports = function(sequelize){
 	//The facebook model
 	app.models.Facebook = sequelize.define('facebooks', {
 		'id': {'type': Sequelize.STRING, 'primaryKey': true},
+		'active': Sequelize.BOOLEAN,
 		'displayName': Sequelize.STRING,
 		'fullName': Sequelize.STRING,
 		'email': Sequelize.STRING,
@@ -34,6 +41,7 @@ module.exports = function(sequelize){
 	//The Google model
 	app.models.Google = sequelize.define('googles', {
 		'id': {'type': Sequelize.STRING, 'primaryKey': true},
+		'active': Sequelize.BOOLEAN,
 		'displayName': Sequelize.STRING,
 		'fullName': Sequelize.STRING,
 		'location': Sequelize.STRING,
@@ -49,6 +57,7 @@ module.exports = function(sequelize){
 	//The twitter model.
 	app.models.Twitter = sequelize.define('twitters', {
 		'id': {'type': Sequelize.STRING, 'primaryKey': true},
+		'active': Sequelize.BOOLEAN,
 		'displayName': Sequelize.STRING,
 		'fullName': Sequelize.STRING,
 		'location': Sequelize.STRING,

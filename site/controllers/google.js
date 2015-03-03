@@ -91,14 +91,16 @@ module.exports = function(){
 				if(!err){
 					console.log(response);
 					console.log('');
-					console.log(response.items);
-					console.log('');
-					console.log(response.items[0].actor);
-					console.log('');
-					console.log(response.items[0].object);
-					console.log('');
-					console.log(response.items[0].object.attachments);
-					console.log('');
+					if(response.items.length < 0){
+						console.log(response.items);
+						console.log('');
+						console.log(response.items[0].actor);
+						console.log('');
+						console.log(response.items[0].object);
+						console.log('');
+						console.log(response.items[0].object.attachments);
+						console.log('');
+					}
 					req.session.accounts.google.activities = response;
 					res.redirect('/google/moments/list');
 				}else{

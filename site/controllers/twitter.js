@@ -14,72 +14,78 @@ module.exports = function(){
 			'https://api.twitter.com/1.1/users/lookup.json?user_id='+req.session.accounts.twitter.user_id,
 			req.session.accounts.twitter.oauth.access_token,
 			req.session.accounts.twitter.oauth.access_token_secret,
-			function (e, profile, obj){
-				if (e) console.error(e);
+			function (err, profile, obj){
+				if (err){
+					console.error(err);
+				}else{
 
-				profile = JSON.parse(profile);
+					profile = JSON.parse(profile);
 
-				console.log(req.session.accounts.twitter.oauth.access_token);
-				console.log(req.session.accounts.twitter.oauth.access_token_secret);
-				console.log('||||||||||||  Twitter Profile  ||||||||||||');
-				console.log(profile);
-				console.log('');
-				console.log('');
+					console.log(req.session.accounts.twitter.oauth.access_token);
+					console.log(req.session.accounts.twitter.oauth.access_token_secret);
+					console.log(req.session.user);
+					console.log('||||||||||||  Twitter Profile  ||||||||||||');
+					console.log(profile);
+					console.log('');
+					console.log('');
 
-				twtProfile = {
-					"id": profile[0].id,
-					"fullName": profile[0].name,
-					"displayName": profile[0].screen_name,
-					"location": profile[0].location,
-					"locale": profile[0].lang,
-					"timezone": profile[0].time_zone,
-					"followersCount": profile[0].followers_count,
-					"friendsCount": profile[0].friends_count,
-					"listedCount": profile[0].listed_count,
-					"favouritesCount": profile[0].favourites_count,
-					"statusesCount": profile[0].statuses_count,
-					"profileImageUrl": profile[0].profile_image_url,
-					"profileImageUrlHttps": profile[0].profile_image_url_https
+					twtProfile = {
+						"id": profile[0].id,
+						"fullName": profile[0].name,
+						"displayName": profile[0].screen_name,
+						"location": profile[0].location,
+						"locale": profile[0].lang,
+						"timezone": profile[0].time_zone,
+						"followersCount": profile[0].followers_count,
+						"friendsCount": profile[0].friends_count,
+						"listedCount": profile[0].listed_count,
+						"favouritesCount": profile[0].favourites_count,
+						"statusesCount": profile[0].statuses_count,
+						"profileImageUrl": profile[0].profile_image_url,
+						"profileImageUrlHttps": profile[0].profile_image_url_https
+					}
+					req.session.user = twtProfile;
+
+					app.models.User
+						.findOrCreate({
+							'where': {'twtId': twtProfile.id},
+							'defaults':{ 
+								'fullName': twtProfile.fullName,
+								'active': 1
+							} 
+						})
+						.success(function(localUser, created) {
+							req.session.user.fbId = localUser.dataValues.fbId;
+							req.session.user.twtId = localUser.dataValues.twtId;
+							req.session.user.gId = localUser.dataValues.gId;
+							app.models.Twitter
+								.findOrCreate({
+									'where': { 'userId': localUser.id },
+									'defaults':{
+										"id": twtProfile.id,
+										'active': 1,
+										"fullName": twtProfile.fullName,
+										"displayName": twtProfile.displayName,
+										"location": twtProfile.location,
+										"locale": twtProfile.locale,
+										"timezone": twtProfile.timezone,
+										"followersCount": twtProfile.followersCount,
+										"friendsCount": twtProfile.friendsCount,
+										"listedCount": twtProfile.listedCount,
+										"favouritesCount": twtProfile.favouritesCount,
+										"statusesCount": twtProfile.statusesCount,
+										"profileImageUrl": twtProfile.profileImageUrl,
+										"profileImageUrlHttps": twtProfile.profileImageUrlHttps,
+										"token": req.session.accounts.twitter.oauth.access_token,
+										"tokenSecret": req.session.accounts.twitter.oauth.access_token_secret
+									}
+								})
+								.success(function(user, created) {
+									req.session.user.id = localUser.id;
+									res.redirect('/twitter/statuses/user_timeline');
+								});
+						});
 				}
-				req.session.user = twtProfile;
-
-				app.models.User
-					.findOrCreate({
-						'where': {'twtId': twtProfile.id},
-						'defaults':{ 
-							'fullName': twtProfile.fullName,
-							'active': 1
-						} 
-					})
-					.success(function(localUser, created) {
-						req.session.user.fbId = localUser.dataValues.fbId;
-						req.session.user.twtId = localUser.dataValues.twtId;
-						req.session.user.gId = localUser.dataValues.gId;
-						app.models.Twitter
-							.findOrCreate({
-								'where': { 'userId': localUser.id },
-								'defaults':{
-									"id": twtProfile.id,
-									"fullName": twtProfile.fullName,
-									"displayName": twtProfile.displayName,
-									"location": twtProfile.location,
-									"locale": twtProfile.locale,
-									"timezone": twtProfile.timezone,
-									"followersCount": twtProfile.followersCount,
-									"friendsCount": twtProfile.friendsCount,
-									"listedCount": twtProfile.listedCount,
-									"favouritesCount": twtProfile.favouritesCount,
-									"statusesCount": twtProfile.statusesCount,
-									"profileImageUrl": twtProfile.profileImageUrl,
-									"profileImageUrlHttps": twtProfile.profileImageUrlHttps,
-									"token": req.session.accounts.twitter.oauth.access_token,
-									"tokenSecret": req.session.accounts.twitter.oauth.access_token_secret
-								}
-							})
-							.success(function(user, created) {
-								res.redirect('/twitter/statuses/user_timeline');
-							});
-					});
 			}
 		);
 	});

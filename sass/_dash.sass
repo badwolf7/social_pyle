@@ -4,9 +4,19 @@
 		margin: 20px 1% 10px
 		overflow: hidden
 		section
-			width: 100%
 			padding: 0 1%
-			background: $morningLight
+			box-shadow: 0 1px 3px 0 rgba(55,59,68,.3)
+			border-radius: 3px
+			position: fixed
+			top: 100px
+			@media(max-width:$sm)
+				display: none
+			@media(min-width:$sm)and(max-width:$md)
+				display: initial
+				width: 20.4%
+			@media(min-width:$md)
+				display: initial
+				width: 18.4%
 		@media(max-width:$sm)
 			display: none
 		@media(min-width:$sm)and(max-width:$md)

@@ -1,7 +1,7 @@
 <ul class="socialList">
 	<li id="facebook">
 		<div class="col-sm-3 col-xs-5 buttonCont">
-			<% if(user.fbId != null){ %>
+			<% if(user.fbId != null && user.fbActive){ %>
 			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="fb_on" checked>
 			<% }else{ %>
 			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="fb_off">
@@ -13,7 +13,7 @@
 	</li>
 	<li id="google-plus">
 		<div class="col-sm-3 col-xs-5 buttonCont">
-			<% if(user.gId != null){ %>
+			<% if(user.gId != null && user.twtActive){ %>
 			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="g_on" checked>
 			<% }else{ %>
 			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="g_off">
@@ -25,7 +25,7 @@
 	</li>
 	<li id="twitter">
 		<div class="col-sm-3 col-xs-5 buttonCont">
-			<% if(user.twtId != null){ %>
+			<% if(user.twtId != null && user.twtActive){ %>
 			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="twt_on" checked>
 			<% }else{ %>
 			<input class="socialToggleSwitch" type="checkbox" name="social_toggle" value="twt_off">

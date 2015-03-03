@@ -3,6 +3,7 @@
 <main id="dash" class="dash">
 	<aside class="dashOptions">
 		<section>
+			<h4>Filter</h4>
 			<ul>
 				<li>
 					<a href="">Facebook</a>
@@ -16,9 +17,9 @@
 			</ul>
 		</section>
 	</aside>
-	
+
 	<section class="cardHolder col-xs-12 js-masonry">
-		<% if(twitter){ %>
+		<% if(twitter && user.twtActive){ %>
 			<% for(var i=0;i<twitter.feed.length;i++){ %>
 
 				<article class="post twitter-post" style="color:#<%= twitter.feed[i].user.profile_text_color %>;">
@@ -35,7 +36,7 @@
 					<% if(twitter.feed[i].entities.media != undefined){ %>
 						<% for(var j=0;j<twitter.feed[i].entities.media.length;j++){ %>
 							<% if(twitter.feed[i].entities.media[j].type == 'photo' && twitter.feed[i].entities.urls.length > 0){ %>
-								<a href="<%= twitter.feed[i].entities.urls[0].url %>">
+								<a target="_blank" href="<%= twitter.feed[i].entities.urls[0].url %>">
 									<img class="postImg" src="<%= twitter.feed[i].entities.media[j].media_url %>" alt="<%= twitter.feed[i].entities.media[j].id %>">
 								</a>
 							<% }else{ %>
@@ -61,7 +62,7 @@
 			<% } %>
 		<% } %>
 
-		<% if(google){ %>
+		<% if(google && user.gActive){ %>
 			<% for(var k=0;k<google.activities.items.length;k++){ %>
 				<% if(google.activities.items[k].verb == 'post'){ %>
 				<article class="post google-post">

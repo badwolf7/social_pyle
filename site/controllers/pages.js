@@ -4,6 +4,9 @@ var fs = require('fs');  // file system
 var msg = "out";
 var newSess = 1;
 var refresh = false;
+var fcheck = false;
+var gcheck = false;
+var tcheck = false;
 var $now = {};
 var date = {};
 var longUrl = [];
@@ -149,6 +152,13 @@ function sessionBuilder(req,res){
 	msg = "in";
 	console.log("");
 	console.log("");
+	console.log("session accounts: ");
+	console.log(req.session.accounts.twitter);
+
+	req.session.user.twtActive = req.session.accounts.twitter.active;
+
+	console.log("");
+	console.log("");
 	console.log("session user: ");
 	console.log(req.session.user);
 
@@ -171,6 +181,7 @@ function sessionBuilder(req,res){
 						}
 					}
 					req.session.accounts.twitter.tweets[i].text = urlify(req.session.accounts.twitter.tweets[i].text, linkColor, longUrl, shortUrl, displayUrl);
+					console.log(req.session.accounts.twitter.tweets[i].text);
 				}
 				req.session.accounts.twitter.tweets[i].created = formatCreated(req, i, 'tweets', req.session.accounts.twitter.tweets[i].created_at);
 				req.session.accounts.twitter.tweets[i].time_lapse = ms;
@@ -285,26 +296,46 @@ module.exports = function(){
 					}
 				}else{
 					sub = '';
-					
 					if(req.session.user.fbId != null && req.session.accounts.facebook != null){
 						console.log('facebook');
+						fcheck=true;
 					}else if(req.session.user.fbId != null && req.session.accounts.facebook == null){
 						console.log('facebook login');
 						res.redirect('/auth/facebook');
+					}else{
+						fcheck=true;
 					}
 
 					if(req.session.user.twtId != null && req.session.accounts.twitter != null){
 						console.log('twitter');
+						tcheck=true;
 					}else if(req.session.user.twtId != null && req.session.accounts.twitter == null){
 						console.log('twitter login');
 						res.redirect('/auth/twitter');
+					}else{
+						tcheck=true;
 					}
 
 					if(req.session.user.gId != null && req.session.accounts.google != null){
 						console.log('google');
+						gcheck=true;
 					}else if(req.session.user.gId != null && req.session.accounts.google == null){
 						console.log('google login');
 						res.redirect('/auth/google');
+					}else{
+						gcheck=true;
+					}
+
+
+					if(req.session.fbActive != undefined){
+						req.session.user.fbActive = req.session.fbActive
+					}
+					if(req.session.twtActive != undefined){
+						req.session.user.twtActive = req.session.twtActive
+						console.log('twt Active: '+req.session.user.twtActive)
+					}
+					if(req.session.gActive != undefined){
+						req.session.user.gActive = req.session.gActive
 					}
 
 					refresh = true;
@@ -313,9 +344,9 @@ module.exports = function(){
 					console.log('req.session.accounts.timeline');
 					console.log(req.session.accounts.twitter.timeline);
 					console.log('');
-					setTimeout(function(){
+					if(fcheck && tcheck && gcheck){
 						sessionBuilder(req,res,sub);
-					}, 300);
+					}
 				}
 			}else{
 				msg = "out";

@@ -39,6 +39,14 @@ var LINKEDIN_CALLBACK_URL = 'http://127.0.0.1:3000/auth/linkedin/callback';
 
 var Linkedin = require('node-linkedin')(LINKEDIN_API_KEY,LINKEDIN_SECRET_KEY,LINKEDIN_CALLBACK_URL)
 
+// Scheduler
+var schedule = require('node-schedule');
+var gCookieReset = false;
+var gReset = schedule.scheduleJob('0 24 * * *',function(y){
+	console.log('GOOGLE COOKIE RESET ;)')
+	gCookieReset = true;
+}.bind(null,gCookieReset));
+
 // MySQL Connection
 var mysql = require('mysql');
 var connection = mysql.createConnection({
@@ -52,6 +60,11 @@ connection.connect();
 
 var sesCookies = {};
 var cookies;
+
+var hour = '3600000';
+function hours(num){
+	return (num * hour)
+}
 
 module.exports = function(){
 	app.use(passport.initialize());
@@ -94,6 +107,7 @@ module.exports = function(){
 							'where': { 'userId': localUser.id },
 							'defaults':{
 								'id': profile.id,
+								'active': 1,
 								'displayName': profile.displayName,
 								'fullName': localUser.fullName,
 								'gender': profile.gender,
@@ -258,6 +272,7 @@ module.exports = function(){
 			sesCookies.twtTokenSecret = '';
 
 			var twtRedirect = function(){
+				console.log(req.session);
 				console.log(req.session.accounts.twitter);
 				res.redirect('/twitter/users/lookup');
 			}
@@ -277,7 +292,7 @@ module.exports = function(){
 					req.session.accounts.twitter.oauth.access_token = sesCookies.TwitterToken;
 					req.session.accounts.twitter.user_id = rows[i].id;
 					req.session.accounts.twitter.screen_name = rows[i].displayName;
-
+					req.session.accounts.twitter.active = req.session.user.twtActive = rows[i].active;
 				}
 				twtRedirect();
 			});
@@ -331,6 +346,7 @@ module.exports = function(){
 						'where': { 'userId': localUser.id },
 						'defaults':{
 							'id': gUser.id,
+							'active': 1,
 							'displayName': gUser.displayName,
 							'fullName': gUser.fullName,
 							'location': gUser.location,
@@ -424,6 +440,7 @@ module.exports = function(){
 					sesCookies.googleRefreshToken = req.session.accounts.google.oauth.refreshToken = rows[i].refreshToken;
 					req.session.accounts.google.user_id = rows[i].id;
 					req.session.user.id = rows[i].userId;
+					req.session.gActive = rows[i].active;
 				}
 				getUser();
 			});
@@ -433,7 +450,7 @@ module.exports = function(){
 	app.get( '/auth/google/callback', passport.authenticate('google', {failureRedirect: '/' }),
 		function(req, res){
 			cookies = new Cookies(req, res);
-			cookies.set('google_token',googleAccessToken,{'maxAge': '31556952000'});
+			cookies.set('google_token',googleAccessToken,{'maxAge': hours(2)});
 
 			req.session.user = req.user;
 
@@ -443,4 +460,22 @@ module.exports = function(){
 			res.redirect('/google/people/get');
 		}
 	);
+
+	app.get('/accounts/deactivate', function(req,res){
+		// var data = {
+		// 	'table':'facebooks',
+		// 	'uId':uId,
+		// 	'actId':fbId
+		// }
+		var deactivateQuery = 'UPDATE '+req.query.table+' SET active=0 WHERE userId="'+req.query.uId+'" AND id="'+req.query.actId+'";';
+		console.log(deactivateQuery);
+		connection.query(deactivateQuery, function(err, result){
+			if(!err){
+				console.log(result);
+
+			}else{
+				console.log(err);
+			}
+		});
+	});
 }
